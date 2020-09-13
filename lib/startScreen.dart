@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ba_polizei/vivaPerson.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -99,57 +100,67 @@ class StartScreen extends StatelessWidget {
             child: GridView.count(
               crossAxisCount: 2,
               children: List.generate(
-                  grids.length,
-                  (index) => Padding(
-                        padding: const EdgeInsets.only(
-                            left: 2.0, bottom: 4.0, right: 2.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            child: Column(
+                grids.length,
+                (index) => Padding(
+                  padding:
+                      const EdgeInsets.only(left: 2.0, bottom: 4.0, right: 2.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (grids[index][0] == "ViVA" &&
+                          grids[index][1] == "Person") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => VivaPerson()),
+                        );
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Center(
+                              child: Icon(
+                                grids[index][2],
+                                size: 100,
+                                color: Colors.amber,
+                              ),
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Center(
-                                  child: Icon(
-                                    
-                                    grids[index][2],
-                                    size: 100,
-                                    color: Colors.amber,
-                                  ),
+                                AutoSizeText(
+                                  grids[index][0],
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.left,
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    AutoSizeText(
-                                      grids[index][0],
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    AutoSizeText(
-                                      grids[index][1],
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.left,
-                                    )
-                                  ],
-                                ),
+                                AutoSizeText(
+                                  grids[index][1],
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                )
                               ],
                             ),
-                          ),
+                          ],
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
