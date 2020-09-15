@@ -28,15 +28,15 @@ class StartScreen extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: <Color>[
-            Colors.grey[300].withOpacity(0.5),
-            Colors.grey[300].withOpacity(0.1),
+            Colors.grey[100].withOpacity(0.1),
+            Colors.grey[100].withOpacity(0.1),
             Colors.white,
             Colors.white,
             Colors.white
           ],
           stops: [
             0.0,
-            0.15,
+            0.05,
             0.7,
             0.9,
             1.0,
