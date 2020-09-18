@@ -1,34 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-class Abfragegrund extends StatefulWidget {
+class SearchSheetIOS extends StatefulWidget {
+  List<String> auswahl;
+  String title;
+
+  SearchSheetIOS({this.auswahl, this.title});
+
   @override
-  _AbfragegrundState createState() => _AbfragegrundState();
+  _SearchSheetIOSState createState() => _SearchSheetIOSState();
 }
 
-class _AbfragegrundState extends State<Abfragegrund> {
-  List<String> gruende = [
-    "Abwehr von -einer im Einzelfall bestehenden-Gefahr(en)",
-    "Strafverfolgung",
-    "Überwachung Straßenverkehr",
-    "Aktenbereinigung",
-    "Amtshilfe",
-    "Aufgefundenene oder verkehrsbehindernde Fahrzeuge",
-    "Auswertung",
-    "Datenpflege",
-    "Datenschutzrechtliches Auskunfts-/Löschungsersuchen",
-    "Fahndung, Grenzfahndung, Kontrollstelle",
-    "Grenzkontrolle",
-    "Identitätsprüfung",
-    "Nichtbeachten Aufforderung oder Unfallflucht",
-    "Ordnungswidrigkeiten",
-    "Polizeiliche Rechtshilfe",
-    "Sonstige Anlässe",
-    "Strafverfolgung Dritter",
-    "Strafverfolgung gegen Betroffenen",
-  ];
-
-  List<String> gruendegefiltert = [];
+class _SearchSheetIOSState extends State<SearchSheetIOS> {
+  List<String> gefiltert = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +29,7 @@ class _AbfragegrundState extends State<Abfragegrund> {
                   onTap: () => Navigator.pop(context),
                   child: AutoSizeText(
                     "Abbrechen",
+                    maxLines: 1,
                     style: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontSize: 17,
@@ -53,18 +38,20 @@ class _AbfragegrundState extends State<Abfragegrund> {
                 ),
               ),
               Expanded(
-                flex: 12,
+                flex: 1,
                 child: Container(),
               ),
               Expanded(
                 flex: 37,
-                child: AutoSizeText(
-                  "Abfragegrund",
-                  style: TextStyle(fontSize: 20),
+                child: Center(
+                  child: AutoSizeText(
+                    widget.title,
+                    maxLines: 1,
+                  ),
                 ),
               ),
               Expanded(
-                flex: 30,
+                flex: 15,
                 child: Container(),
               ),
             ],
@@ -111,19 +98,23 @@ class _AbfragegrundState extends State<Abfragegrund> {
         physics: ScrollPhysics(),
         child: Column(
           children: [
-            Container(
-              height: height * 0.08,
-              color: Theme.of(context).secondaryHeaderColor.withOpacity(0.5),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Text(
-                    "Auswahl löschen",
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 18),
+            GestureDetector(
+              onTap: () => Navigator.pop(context,
+                  widget.title == "Abfragegrund" ? " Bitte auswählen" : "..."),
+              child: Container(
+                height: height * 0.08,
+                color: Theme.of(context).secondaryHeaderColor.withOpacity(0.5),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Text(
+                      "Auswahl löschen",
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 18),
+                    ),
                   ),
                 ),
               ),
@@ -131,17 +122,17 @@ class _AbfragegrundState extends State<Abfragegrund> {
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: gruendegefiltert.length == 0
-                  ? gruende.length
-                  : gruendegefiltert.length,
+              itemCount: gefiltert.length == 0
+                  ? widget.auswahl.length
+                  : gefiltert.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.pop(
                         context,
-                        gruendegefiltert.length == 0
-                            ? gruende[index]
-                            : gruendegefiltert[index]);
+                        gefiltert.length == 0
+                            ? widget.auswahl[index]
+                            : gefiltert[index]);
                   },
                   child: Container(
                     height: height * 0.09,
@@ -150,9 +141,9 @@ class _AbfragegrundState extends State<Abfragegrund> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          gruendegefiltert.length == 0
-                              ? gruende[index]
-                              : gruendegefiltert[index],
+                          gefiltert.length == 0
+                              ? widget.auswahl[index]
+                              : gefiltert[index],
                           style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontSize: 18),
@@ -172,14 +163,14 @@ class _AbfragegrundState extends State<Abfragegrund> {
   void filter(String text) {
     setState(
       () {
-        gruendegefiltert = gruende
+        gefiltert = widget.auswahl
             .where(
               (element) => element.toLowerCase().contains(text.toLowerCase()),
             )
             .toList();
 
-        if (text != "" && gruendegefiltert.length == 0) {
-          gruendegefiltert = ["Nichts gefunden"];
+        if (text != "" && gefiltert.length == 0) {
+          gefiltert = ["Nichts gefunden"];
         }
       },
     );

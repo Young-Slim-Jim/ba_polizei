@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ba_polizei/vivaPerson.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,8 +30,8 @@ class StartScreen extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: <Color>[
-            Colors.grey[100].withOpacity(0.1),
-            Colors.grey[100].withOpacity(0.1),
+            Color(0xffdddddd),
+            Color(0xffdddddd),
             Colors.white,
             Colors.white,
             Colors.white
@@ -86,9 +88,26 @@ class StartScreen extends StatelessWidget {
                 color: Theme.of(context).secondaryHeaderColor,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Angemeldet als plxtu62",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(color: Colors.white, fontSize: 13)),
+                  child: Platform.isIOS
+                      ? Text("Angemeldet als plxtu62",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.white, fontSize: 13))
+                      : RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(text: 'Angemeldet als'),
+                              TextSpan(
+                                  text: ' plxtu62',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textSelectionColor)),
+                            ],
+                          ),
+                        ),
                 ),
               ),
             ),
