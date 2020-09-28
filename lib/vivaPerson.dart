@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ba_polizei/listsammlung.dart';
+import 'package:ba_polizei/resultScreen.dart';
 import 'package:ba_polizei/searchSheetAndroid.dart';
 import 'package:ba_polizei/searchSheetIOS.dart';
 import 'package:ba_polizei/cupertinoDialog.dart';
@@ -143,7 +144,13 @@ class _VivaPersonState extends State<VivaPerson> {
                   ? Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: FlatButton(
-                        onPressed: () => {},
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultScreen()),
+                          )
+                        },
                         color: Theme.of(context).accentColor,
                         child: Container(
                           height: height * 0.065,
