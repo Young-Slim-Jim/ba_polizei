@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchSheetAndroid extends StatefulWidget {
-  List<String> auswahl;
-  String title;
+  final List<String> auswahl;
+  final String title;
 
   SearchSheetAndroid({this.auswahl, this.title});
   @override

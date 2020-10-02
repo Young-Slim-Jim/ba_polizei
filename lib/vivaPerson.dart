@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:ba_polizei/listsammlung.dart';
 import 'package:ba_polizei/resultScreen.dart';
+import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/searchSheetAndroid.dart';
 import 'package:ba_polizei/searchSheetIOS.dart';
 import 'package:ba_polizei/cupertinoDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class VivaPerson extends StatefulWidget {
   @override
@@ -56,7 +58,6 @@ class _VivaPersonState extends State<VivaPerson> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(height * 0.113),
@@ -144,12 +145,13 @@ class _VivaPersonState extends State<VivaPerson> {
                   ? Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: FlatButton(
-                        onPressed: () => {
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+                                
                                 builder: (context) => ResultScreen()),
-                          )
+                          );
                         },
                         color: Theme.of(context).accentColor,
                         child: Container(
