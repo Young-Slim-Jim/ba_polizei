@@ -1,3 +1,4 @@
+import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
 import 'package:ba_polizei/results_nach_anfrage/displayDropdown.dart';
 import 'package:ba_polizei/results_nach_anfrage/weitereDetails.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'displayData.dart';
 
 class MainScreenSelectedResult extends StatefulWidget {
   @override
-  _MainScreenSelectedResultState createState() => _MainScreenSelectedResultState();
+  _MainScreenSelectedResultState createState() =>
+      _MainScreenSelectedResultState();
 }
 
 class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
@@ -22,26 +24,7 @@ class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.06,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Chip(
-                      backgroundColor: Colors.orange,
-                      label: Icon(Icons.arrow_back),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.grey[200],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            ChipNavigator(),
             DisplayData(
                 label: "Aschreibungsanlass/-zweck", content: "Straftat"),
             DisplayData(label: "Aktive Fahndungen", content: "2"),
@@ -59,8 +42,8 @@ class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
               pushWidget: WeitereDetails(),
               chip: GestureDetector(
                 onTap: () {
-                Navigator.popUntil(
-                    context, ModalRoute.withName("weitere Details"));
+                  Navigator.popUntil(
+                      context, ModalRoute.withName("weitere Details"));
                 },
                 child: Chip(
                   backgroundColor: Theme.of(context).primaryColor,

@@ -30,7 +30,9 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
     return GestureDetector(
       child: AnimatedContainer(
         color: widget.selected
-            ? widget.danger ? Colors.red : Colors.blue
+            ? widget.danger
+                ? Colors.red
+                : Colors.blue
             : Colors.white,
         height: widget.selected
             ? height * heightFactorSelected
@@ -44,7 +46,8 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
               onTap: () {
                 final chips = Provider.of<ChipProvider>(context, listen: false);
                 chips.addChip(
-                  GestureDetector(
+                  key: "MainScreenSelectedResult",
+                  chip: GestureDetector(
                     onTap: () {
                       Navigator.of(context).popUntil(
                           ModalRoute.withName('MainScreenSelectedResult'));

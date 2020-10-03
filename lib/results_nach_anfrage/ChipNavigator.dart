@@ -13,8 +13,12 @@ class ChipNavigator extends StatelessWidget {
         children: [
           Expanded(
             flex: 5,
-            child: Row(
-              children: buildRow(chips),
+            child: Wrap(
+              children: List.generate(chips.getChips().length, (index) {
+                final contentList = chips.getChips();
+                final content = contentList[index];
+                return content;
+              }),
             ),
           ),
           Expanded(
@@ -27,7 +31,7 @@ class ChipNavigator extends StatelessWidget {
     );
   }
 
-  buildRow(ChipProvider chips){
+  buildRow(ChipProvider chips) {
     final content = chips.getChips();
     return content;
   }

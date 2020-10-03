@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ChipProvider extends ChangeNotifier {
-  List<Widget> chips = [];
+  Map<String, Widget> chips = {};
 
-  addChip(Widget chip) {
-    chips.add(chip);
+  addChip({String key, Widget chip}) {
+    chips.putIfAbsent(key, () => chip);
     notifyListeners();
   }
 
-  removeCip(Widget chip) {
-    chips.remove(chip);
+  removeChip(String key) {
+    chips.remove(key);
     notifyListeners();
   }
 
   List<Widget> getChips() {
-    return chips;
+    return chips.values.toList();
   }
 }

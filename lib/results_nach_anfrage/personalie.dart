@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Personalie extends StatelessWidget {
+  final String ident;
+  Personalie(this.ident);
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()  {
+      onWillPop: () {
         final chips = Provider.of<ChipProvider>(context, listen: false);
-        chips.removeCip(chip)
+        chips.removeChip(ident);
+        return Future.value(true);
       },
       child: Scaffold(
         appBar: AppBar(

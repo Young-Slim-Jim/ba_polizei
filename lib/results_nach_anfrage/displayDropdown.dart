@@ -18,7 +18,7 @@ class DisplayDropdown extends StatelessWidget {
           TextField(
             onTap: () {
               final chips = Provider.of<ChipProvider>(context, listen: false);
-              chips.addChip(chip);
+              chips.addChip(key: text, chip: chip);
 
               Navigator.push(
                 context,

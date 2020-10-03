@@ -1,25 +1,36 @@
 import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
+import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Personenfandungsnotierung extends StatelessWidget {
+  final String ident;
+  Personenfandungsnotierung(this.ident);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Theme.of(context).accentColor),
-        title: Text("ViVA Person"),
-        actions: [Icon(Icons.share)],
-      ),
-      body: Column(
-        children: [
-          ChipNavigator(),
-          FlatButton(
-              onPressed: () {
-
-                Navigator.of(context).popUntil(ModalRoute.withName('/MainScreenDetails'));
-              },
-              child: Text("test"))
-        ],
+    return WillPopScope(
+      onWillPop: () {
+        final chips = Provider.of<ChipProvider>(context, listen: false);
+        chips.removeChip(ident);
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Theme.of(context).accentColor),
+          title: Text("ViVA Person"),
+          actions: [Icon(Icons.share)],
+        ),
+        body: Column(
+          children: [
+            ChipNavigator(),
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .popUntil(ModalRoute.withName('/MainScreenDetails'));
+                },
+                child: Text("test"))
+          ],
+        ),
       ),
     );
   }
