@@ -8,8 +8,19 @@ class ChipProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  removeChip(String key) {
-    chips.remove(key);
+  removeChipFromChip(String keySend) {
+    chips.removeWhere((key, value) {
+      if (keySend != key && key != "MainScreenSelectedResult") {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    notifyListeners();
+  }
+
+  removeChipOnPop(String keySend) {
+    chips.remove(keySend);
     notifyListeners();
   }
 

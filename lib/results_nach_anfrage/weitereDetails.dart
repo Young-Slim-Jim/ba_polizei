@@ -19,7 +19,7 @@ class _WeitereDetailsState extends State<WeitereDetails> {
     return WillPopScope(
       onWillPop: () {
         final chips = Provider.of<ChipProvider>(context, listen: false);
-        chips.removeChip("MainScreenSelectedResult");
+        chips.removeChipOnPop("weitere Details");
         return Future.value(true);
       },
       child: Scaffold(
@@ -40,10 +40,13 @@ class _WeitereDetailsState extends State<WeitereDetails> {
                 onTap: () {
                   Navigator.popUntil(context, ModalRoute.withName("Anschrift"));
                 },
-                child: Chip(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  label:
-                      Text("Anschrift", style: TextStyle(color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Chip(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: Text("Anschrift",
+                        style: TextStyle(color: Colors.white)),
+                  ),
                 ),
               ),
             ),
@@ -55,10 +58,13 @@ class _WeitereDetailsState extends State<WeitereDetails> {
                   Navigator.popUntil(
                       context, ModalRoute.withName("Personalie"));
                 },
-                child: Chip(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  label:
-                      Text("Personalie", style: TextStyle(color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Chip(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: Text("Personalie",
+                        style: TextStyle(color: Colors.white)),
+                  ),
                 ),
               ),
             ),
@@ -71,11 +77,14 @@ class _WeitereDetailsState extends State<WeitereDetails> {
                   Navigator.popUntil(context,
                       ModalRoute.withName("Personenfahndungsnotierung"));
                 },
-                child: Chip(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  label: Text(
-                    "Personenfahndungsnotierung",
-                    style: TextStyle(color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Chip(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: Text(
+                      "Personenfahndungsnotierung",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),

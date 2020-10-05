@@ -1,5 +1,7 @@
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/MainScreenSelectedResult.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,18 +45,29 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
           children: [
             Text(widget.content),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
+                final user = await FirebaseAuth.instance.signInAnonymously();
+                print(user.user.uid);
+                final CollectionReference personCollection =
+                    FirebaseFirestore.instance.collection('person');
+
+                final downloaded = await personCollection.get();
+
                 final chips = Provider.of<ChipProvider>(context, listen: false);
                 chips.addChip(
                   key: "MainScreenSelectedResult",
                   chip: GestureDetector(
                     onTap: () {
+                      chips.removeChipFromChip("MainScreenSelectedResult");
                       Navigator.of(context).popUntil(
                           ModalRoute.withName('MainScreenSelectedResult'));
                     },
-                    child: Chip(
-                      backgroundColor: Colors.orange,
-                      label: Icon(Icons.arrow_back),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Chip(
+                        backgroundColor: Colors.orange,
+                        label: Icon(Icons.arrow_back),
+                      ),
                     ),
                   ),
                 );

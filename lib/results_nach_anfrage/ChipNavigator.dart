@@ -7,24 +7,18 @@ class ChipNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     final chips = Provider.of<ChipProvider>(context);
     return Container(
-      height: MediaQuery.of(context).size.height * 0.06,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 5,
-            child: Wrap(
-              children: List.generate(chips.getChips().length, (index) {
-                final contentList = chips.getChips();
-                final content = contentList[index];
-                return content;
-              }),
-            ),
+          Wrap(
+            children: List.generate(chips.getChips().length, (index) {
+              final contentList = chips.getChips();
+              final content = contentList[index];
+              return content;
+            }),
           ),
-          Expanded(
-            child: Divider(
-              color: Colors.grey[200],
-            ),
+          Divider(
+            color: Colors.grey[200],
           ),
         ],
       ),

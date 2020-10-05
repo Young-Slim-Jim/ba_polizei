@@ -11,7 +11,7 @@ class Personalie extends StatelessWidget {
     return WillPopScope(
       onWillPop: () {
         final chips = Provider.of<ChipProvider>(context, listen: false);
-        chips.removeChip(ident);
+        chips.removeChipOnPop(ident);
         return Future.value(true);
       },
       child: Scaffold(

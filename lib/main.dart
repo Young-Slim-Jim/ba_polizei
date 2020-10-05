@@ -4,11 +4,14 @@ import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/MainScreenSelectedResult.dart';
 import 'package:ba_polizei/results_nach_anfrage/weitereDetails.dart';
 import 'package:ba_polizei/startScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ChipProvider(),

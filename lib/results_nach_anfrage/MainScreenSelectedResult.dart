@@ -1,7 +1,9 @@
 import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
+import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/displayDropdown.dart';
 import 'package:ba_polizei/results_nach_anfrage/weitereDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'displayData.dart';
 
@@ -42,14 +44,20 @@ class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
               pushWidget: WeitereDetails(),
               chip: GestureDetector(
                 onTap: () {
+                  final chips =
+                      Provider.of<ChipProvider>(context, listen: false);
+                  chips.removeChipFromChip("weitere Details");
                   Navigator.popUntil(
                       context, ModalRoute.withName("weitere Details"));
                 },
-                child: Chip(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  label: Text(
-                    "Weitere Details",
-                    style: TextStyle(color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: Text(
+                      "Weitere Details",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),

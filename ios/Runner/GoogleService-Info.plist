@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1026812403115-o1bvua30nr8nic14509pvcsug4c58sbg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1026812403115-o1bvua30nr8nic14509pvcsug4c58sbg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCDWnzj4kg_e5Y7YUga9YifryYMNn2O4WQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1026812403115</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.baPolizei</string>
+	<key>PROJECT_ID</key>
+	<string>bapolizei</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bapolizei.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1026812403115:ios:f5ef12a1fb9460377c46ee</string>
+	<key>DATABASE_URL</key>
+	<string>https://bapolizei.firebaseio.com</string>
+</dict>
+</plist>
