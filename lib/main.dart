@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/MainScreenSelectedResult.dart';
 import 'package:ba_polizei/results_nach_anfrage/weitereDetails.dart';
@@ -13,8 +14,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ChipProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ChipProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PersonHitProvider(),
+        ),
+      ],
       child: MyApp(),
     ),
   );

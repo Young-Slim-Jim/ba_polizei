@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:ba_polizei/listsammlung.dart';
+import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/resultScreen.dart';
-import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/searchSheetAndroid.dart';
 import 'package:ba_polizei/searchSheetIOS.dart';
 import 'package:ba_polizei/cupertinoDialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +23,7 @@ class _VivaPersonState extends State<VivaPerson> {
   bool erweitert = false;
   bool phonetisch = false;
   bool nurFahndungsabfrage = false;
+  DateTime bday;
 
   final nameFocus = FocusNode();
   final vornameFocus = FocusNode();
@@ -35,6 +38,7 @@ class _VivaPersonState extends State<VivaPerson> {
   TextEditingController ergaenzungController = TextEditingController(
     text: 'mobileAbfrage',
   );
+
   TextEditingController bdayOrtController = TextEditingController();
   TextEditingController bdaynameController = TextEditingController();
   TextEditingController nicknameController = TextEditingController();
@@ -145,11 +149,11 @@ class _VivaPersonState extends State<VivaPerson> {
                   ? Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: FlatButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await selectHits();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                
                                 builder: (context) => ResultScreen()),
                           );
                         },
@@ -182,6 +186,100 @@ class _VivaPersonState extends State<VivaPerson> {
         ),
       ),
     );
+  }
+
+  Future<void> selectHits() async {
+    final user = await FirebaseAuth.instance.signInAnonymously();
+    print(user.user.uid);
+    final CollectionReference personCollection =
+        FirebaseFirestore.instance.collection('person');
+
+    final downloaded = await personCollection.get();
+    for (var person in downloaded.docs) {
+      final data = person.data().entries.toList();
+      bool hit = true;
+      final personalieMap =
+          data.where((element) => element.key == "personalie").toList();
+      final String vornameFB = personalieMap.first.value["Rufname"];
+      final String nachnameFB = personalieMap.first.value["nachname"]["name"];
+      final String bdayFB = personalieMap.first.value["geburtsdatum"]["bis"];
+
+      if (vornameFB.toLowerCase() == vornameController.text.toLowerCase() &&
+          nachnameFB.toLowerCase() == nameController.text.toLowerCase() &&
+          bdayFB.toLowerCase() == formatbday()) {
+        if (erweitert == false) {
+          final hits = Provider.of<PersonHitProvider>(context, listen: false);
+          hits.addHit(person);
+        } else {
+          if (bdayOrtController.text.isNotEmpty) {
+            if (bdayOrtController.text.toLowerCase() !=
+                personalieMap.first.value["geburtsort"].toLowerCase()) {
+              hit = false;
+            }
+          }
+
+          if (bdaynameController.text.isNotEmpty) {
+            final value =
+                personalieMap.first.value["geburtsname"]["name"].toLowerCase();
+            if (bdaynameController.text.toLowerCase().trim() != value) {
+              hit = false;
+            }
+          }
+
+          if (nicknameController.text.isNotEmpty) {
+            List nicknames = personalieMap.first.value["weitereNamen"];
+            for (var namen in nicknames)
+              if (nicknameController.text.toLowerCase().trim() !=
+                  namen["name"].toLowerCase()) {
+                hit = false;
+              } else {
+                hit = true;
+                break;
+              }
+          }
+
+          if (bdaylandController.text != "...") {
+            if (bdaylandController.text.toLowerCase().trim() !=
+                personalieMap.first.value["geburtsstaat"]["value"]
+                    .toLowerCase()) {
+              hit = false;
+            }
+          }
+
+          if (staatsangehoerigkeitController.text != "...") {
+            List staaten = personalieMap.first.value["staatsangehörigkeit"];
+            for (var staat in staaten)
+              if (staatsangehoerigkeitController.text.toLowerCase().trim() !=
+                  staat["value"].toLowerCase()) {
+                hit = false;
+              } else {
+                hit = true;
+                break;
+              }
+          }
+
+          if (geschlechtsController.text != "...") {
+            if (geschlechtsController.text.toLowerCase().trim() !=
+                personalieMap.first.value["geschlecht"]["value"]
+                    .toLowerCase()) {
+              hit = false;
+            }
+          }
+
+          if (hit == true) {
+            print("KNOOOOOOOOOOOOOOOOT");
+          }
+        }
+      }
+    }
+  }
+
+  String formatbday() {
+    String day = bdayController.text.substring(0, 2);
+    String month = bdayController.text.substring(3, 5);
+    String year = bdayController.text.substring(6, 10);
+    String formatted = year + "-" + month + "-" + day;
+    return formatted;
   }
 
   erweiterteTextfields() {

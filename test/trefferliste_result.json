@@ -1,0 +1,320 @@
+{
+    "result": {
+        "person": [
+            {
+                "fahndung": [
+                    {
+                        
+                    }
+                ],
+                "personalie": [
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:personalie",
+                            "code": "120000101",
+                            "value": "rechtm\u00e4\u00dfige Personalie"
+                        },
+                        "nachname": {
+                            "name": "Wodtke"
+                        },
+                        "rufname": "Benjamin",
+                        "geburtsdatum": {
+                            "von": "1980-01-01",
+                            "bis": "1980-01-01"
+                        },
+                        "geburtsort": "Riga",
+                        "geschlecht": {
+                            "urn": "urn:dtpublic:codelist:geschlecht",
+                            "code": "30000201",
+                            "value": "weiblich"
+                        }
+                    },
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:personalie",
+                            "code": "120000101",
+                            "value": "rechtm\u00e4\u00dfige Personalie"
+                        },
+                        "nachname": {
+                            "name": "M\u00dcLLER"
+                        },
+                        "rufname": "HANS-PETER",
+                        "geburtsdatum": {
+                            "von": "1980-01-01",
+                            "bis": "1980-01-01"
+                        },
+                        "geburtsort": "Riga",
+                        "geschlecht": {
+                            "urn": "urn:dtpublic:codelist:geschlecht",
+                            "code": "30000201",
+                            "value": "weiblich"
+                        }
+                    }
+                ],
+                "phw": [
+                    {
+                        "hinweis": {
+                            "urn": "urn:dtpublic:codelist:phwHinweis",
+                            "code": "1680000101",
+                            "value": "bewaffnet"
+                        }
+                    },
+                    {
+                        "hinweis": {
+                            "urn": "urn:dtpublic:codelist:phwHinweis",
+                            "code": "1680000201",
+                            "value": "gewaltt\u00e4tig"
+                        }
+                    }
+                ],
+                "_href": "/auskunft/api/v1/sis/personen/details/4e343fa8-d616-4052-b43f-a8d616d0521e/1",
+                "_links": {
+                    "self": {
+                        "source": "urn:dtpublic:xelisa:sis:personen"
+                    },
+                    "urn:dtpublic:xelisa:detail": {
+                        "href": "/auskunft/api/v1/sis/personen/details/4e343fa8-d616-4052-b43f-a8d616d0521e/1",
+                        "source": "urn:dtpublic:xelisa:sis:personen"
+                    }
+                }
+            },
+            {
+                "haft": [
+                    {
+                        
+                    }
+                ],
+                "personalie": [
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:personalie",
+                            "code": "120000601",
+                            "value": "missbr\u00e4uchlich benutzte Personalien einer existenten Person"
+                        },
+                        "rufname": "B\u00c4RBEL",
+                        "nachname": {
+                            "name": "MEIER"
+                        },
+                        "geburtsname": {
+                            "name": "SCHULZE"
+                        },
+                        "akademischerGrad": "DR.",
+                        "geschlecht": {
+                            "urn": "urn:dtpublic:codelist:geschlecht",
+                            "code": "30000201",
+                            "value": "weiblich"
+                        },
+                        "geburtsort": "OLDENBURG/HOLSTEIN",
+                        "geburtsstaat": {
+                            "urn": "urn:dtpublic:codelist:staat",
+                            "code": "760011301",
+                            "value": "Mexiko"
+                        },
+                        "staatsangehoerigkeit": [
+                            {
+                                "urn": "urn:dtpublic:codelist:staat",
+                                "code": "760003801",
+                                "value": "deutsch"
+                            },
+                            {
+                                "urn": "urn:dtpublic:codelist:staat",
+                                "code": "760001901",
+                                "value": "belgisch"
+                            }
+                        ],
+                        "weitereNamen": [
+                            {
+                                "art": {
+                                    "urn": "urn:dtpublic:codelist:weitererName",
+                                    "code": "470000801",
+                                    "value": "Ordensname"
+                                },
+                                "name": "SCHWESTER BARBARA"
+                            },
+                            {
+                                "art": {
+                                    "urn": "urn:dtpublic:codelist:weitererName",
+                                    "code": "470000701",
+                                    "value": "K\u00fcnstlername"
+                                },
+                                "name": "CARMEN CALLAS"
+                            },
+                            {
+                                "art": {
+                                    "urn": "urn:dtpublic:codelist:weitererName",
+                                    "code": "470000201",
+                                    "value": "Spitzname"
+                                },
+                                "name": "BABSI"
+                            }
+                        ],
+                        "geburtsdatum": {
+                            "von": "1970-01-01",
+                            "bis": "1970-01-01"
+                        }
+                    },
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:personalie",
+                            "code": "120000601",
+                            "value": "missbr\u00e4uchlich benutzte Personalien einer existenten Person"
+                        },
+                        "rufname": "B\u00c4RBEL",
+                        "nachname": {
+                            "name": "MEIER"
+                        },
+                        "geburtsname": {
+                            "name": "SCHULZE"
+                        },
+                        "akademischerGrad": "DR.",
+                        "geschlecht": {
+                            "urn": "urn:dtpublic:codelist:geschlecht",
+                            "code": "30000201",
+                            "value": "weiblich"
+                        },
+                        "geburtsort": "OLDENBURG/HOLSTEIN",
+                        "geburtsstaat": {
+                            "urn": "urn:dtpublic:codelist:staat",
+                            "code": "760011301",
+                            "value": "Mexiko"
+                        },
+                        "staatsangehoerigkeit": [
+                            {
+                                "urn": "urn:dtpublic:codelist:staat",
+                                "code": "760003801",
+                                "value": "deutsch"
+                            },
+                            {
+                                "urn": "urn:dtpublic:codelist:staat",
+                                "code": "760001901",
+                                "value": "belgisch"
+                            }
+                        ],
+                        "weitereNamen": [
+                            {
+                                "art": {
+                                    "urn": "urn:dtpublic:codelist:weitererName",
+                                    "code": "470000801",
+                                    "value": "Ordensname"
+                                },
+                                "name": "SCHWESTER BARBARA"
+                            },
+                            {
+                                "art": {
+                                    "urn": "urn:dtpublic:codelist:weitererName",
+                                    "code": "470000701",
+                                    "value": "K\u00fcnstlername"
+                                },
+                                "name": "CARMEN CALLAS"
+                            },
+                            {
+                                "art": {
+                                    "urn": "urn:dtpublic:codelist:weitererName",
+                                    "code": "470000201",
+                                    "value": "Spitzname"
+                                },
+                                "name": "BABSI"
+                            }
+                        ],
+                        "geburtsdatum": {
+                            "von": "1970-01-01",
+                            "bis": "1970-01-01"
+                        }
+                    }
+                ],
+                "koerperlichesMerkmal": [
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmale",
+                            "code": "730003301",
+                            "value": "rot"
+                        },
+                        "lage": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmaleLage",
+                            "code": "740000301",
+                            "value": "Haar"
+                        }
+                    },
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmale",
+                            "code": "730006501",
+                            "value": "blau"
+                        },
+                        "lage": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmaleLage",
+                            "code": "740001201",
+                            "value": "Augen"
+                        }
+                    },
+                    {
+                        "art": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmale",
+                            "code": "730001401",
+                            "value": "Narbe"
+                        },
+                        "lage": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmaleLage",
+                            "code": "740003401",
+                            "value": "Brust links"
+                        }
+                    },
+                    {
+                        
+                    },
+                    {
+                        "lage": {
+                            "urn": "urn:dtpublic:codelist:koerperlicheMerkmaleLage",
+                            "code": "740000801",
+                            "value": "Wange rechts"
+                        }
+                    }
+                ],
+                "fahndung": [
+                    {
+                        
+                    }
+                ],
+                "phw": [
+                    {
+                        "hinweis": {
+                            "urn": "urn:dtpublic:codelist:phwHinweis",
+                            "code": "1680003001",
+                            "value": "Rocker"
+                        }
+                    }
+                ],
+                "_href": "/auskunft/api/v1/inpol/personen/details/7ca5ac9e-421b-4ebe-a5ac-9e421beebe04/1",
+                "_links": {
+                    "self": {
+                        "source": "urn:dtpublic:xelisa:inpol:personen"
+                    },
+                    "urn:dtpublic:xelisa:detail": {
+                        "href": "/auskunft/api/v1/inpol/personen/details/7ca5ac9e-421b-4ebe-a5ac-9e421beebe04/1",
+                        "source": "urn:dtpublic:xelisa:inpol:personen"
+                    }
+                }
+            }
+        ],
+        "hinweis": [
+            
+        ]
+    },
+    "parameter": {
+        "person": {
+            "personalie": {
+                "nachname": {
+                    "name": "wodtke"
+                },
+                "rufname": "benjamin"
+            }
+        },
+        "abfragegrund": {
+            "grund": {
+                "urn": "urn:dtpublic:codelist:abfragegrund",
+                "code": "560001601"
+            },
+            "ergaenzung": "mobile Abfrage"
+        }
+    }
+}

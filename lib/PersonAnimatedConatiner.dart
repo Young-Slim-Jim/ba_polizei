@@ -45,14 +45,7 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
           children: [
             Text(widget.content),
             GestureDetector(
-              onTap: () async {
-                final user = await FirebaseAuth.instance.signInAnonymously();
-                print(user.user.uid);
-                final CollectionReference personCollection =
-                    FirebaseFirestore.instance.collection('person');
-
-                final downloaded = await personCollection.get();
-
+              onTap: () {
                 final chips = Provider.of<ChipProvider>(context, listen: false);
                 chips.addChip(
                   key: "MainScreenSelectedResult",
