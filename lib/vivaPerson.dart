@@ -203,12 +203,12 @@ class _VivaPersonState extends State<VivaPerson> {
       final String vornameFB = personalieMap.first.value["Rufname"];
       final String nachnameFB = personalieMap.first.value["nachname"]["name"];
       final String bdayFB = personalieMap.first.value["geburtsdatum"]["bis"];
+      final hits = Provider.of<PersonHitProvider>(context, listen: false);
 
       if (vornameFB.toLowerCase() == vornameController.text.toLowerCase() &&
           nachnameFB.toLowerCase() == nameController.text.toLowerCase() &&
           bdayFB.toLowerCase() == formatbday()) {
         if (erweitert == false) {
-          final hits = Provider.of<PersonHitProvider>(context, listen: false);
           hits.addHit(person);
         } else {
           if (bdayOrtController.text.isNotEmpty) {
@@ -267,7 +267,7 @@ class _VivaPersonState extends State<VivaPerson> {
           }
 
           if (hit == true) {
-            print("KNOOOOOOOOOOOOOOOOT");
+            hits.addHit(person);
           }
         }
       }
