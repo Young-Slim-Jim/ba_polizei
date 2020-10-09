@@ -25,8 +25,8 @@ class PersonAnimatedContainer extends StatefulWidget {
 }
 
 class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
-  double heightFactorSelected = 0.185;
-  double heightFactorUnselected = 0.065;
+  double heightFactorSelected = 0.165;
+  double heightFactorUnselected = 0.085;
 
   @override
   Widget build(BuildContext context) {
@@ -46,75 +46,91 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Row(
-              children: [
-                Expanded(flex: 1, child: Icon(Icons.dangerous)),
-                Expanded(
-                  flex: 9,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.nachname +
-                            ", " +
-                            widget.vorname +
-                            ", " +
-                            widget.bday,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      widget.danger
-                          ? Text(
-                              "Achtung! Zur Person existiert mindestens eine eingeleitete Fahndung.",
-                              style: TextStyle(fontSize: 16),
-                              maxLines: widget.selected ? 2 : 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : Text("Keine taktische Hinweise"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            widget.selected
-                ? GestureDetector(
-                    onTap: () {
-                      final chips =
-                          Provider.of<ChipProvider>(context, listen: false);
-                      chips.addChip(
-                        key: "MainScreenSelectedResult",
-                        chip: GestureDetector(
-                          onTap: () {
-                            chips
-                                .removeChipFromChip("MainScreenSelectedResult");
-                            Navigator.of(context).popUntil(ModalRoute.withName(
-                                'MainScreenSelectedResult'));
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Chip(
-                              backgroundColor: Colors.orange,
-                              label: Icon(Icons.arrow_back),
+            Expanded(
+              flex: 60,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(flex: 2, child: Icon(Icons.dangerous)),
+                    Expanded(
+                      flex: 11,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              widget.nachname +
+                                  ", " +
+                                  widget.vorname +
+                                  ", " +
+                                  widget.bday,
+                              style: TextStyle(fontSize: 20),
                             ),
                           ),
-                        ),
-                      );
+                          widget.danger
+                              ? Flexible(
+                                  fit: FlexFit.tight,
+                                  child: Text(
+                                    "Achtung! Zur Person existiert mindestens eine eingeleitete Fahndung.",
+                                    style: TextStyle(fontSize: 16),
+                                    maxLines: widget.selected ? 2 : 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              : Flexible(
+                                  child: Text("Keine taktische Hinweise"),
+                                ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            widget.selected
+                ? Expanded(
+                    flex: 30,
+                    child: GestureDetector(
+                      onTap: () {
+                        final chips =
+                            Provider.of<ChipProvider>(context, listen: false);
+                        chips.addChip(
+                          key: "MainScreenSelectedResult",
+                          chip: GestureDetector(
+                            onTap: () {
+                              chips.removeChipFromChip(
+                                  "MainScreenSelectedResult");
+                              Navigator.of(context).popUntil(
+                                  ModalRoute.withName(
+                                      'MainScreenSelectedResult'));
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Chip(
+                                backgroundColor: Colors.orange,
+                                label: Icon(Icons.arrow_back),
+                              ),
+                            ),
+                          ),
+                        );
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          settings:
-                              RouteSettings(name: "MainScreenSelectedResult"),
-                          builder: (context) => MainScreenSelectedResult(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            settings:
+                                RouteSettings(name: "MainScreenSelectedResult"),
+                            builder: (context) => MainScreenSelectedResult(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          "Details anzeigen",
+                          textAlign: TextAlign.right,
                         ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        "Details anzeigen",
-                        textAlign: TextAlign.right,
                       ),
                     ),
                   )

@@ -2,25 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class PersonHitProvider extends ChangeNotifier {
-  Map<QueryDocumentSnapshot, bool> hits = {};
+  Map<String, QueryDocumentSnapshot> hits = {};
+  Map<String, bool> selected = {};
 
   void addHit(QueryDocumentSnapshot person) {
-    hits.putIfAbsent(person, () => false);
+    hits.putIfAbsent(person.id, () => person);
+    selected.putIfAbsent(person.id, () => false);
     notifyListeners();
   }
 
-  void changeSelection(QueryDocumentSnapshot person) {
-    hits.updateAll((key, value) => false);
-    hits.update(person, (value) => true);
+  void changeSelection(String id) {
+    selected.updateAll((key, value) => false);
+    selected.update(id, (value) => true);
     notifyListeners();
   }
 
-  bool isSelected(QueryDocumentSnapshot person) {
-    return hits[person];
+  bool isSelected(String id) {
+    return selected[id];
   }
 
-  String getVorname(QueryDocumentSnapshot person) {
-    final data = person.data().entries.toList();
+  String getVorname(String id) {
+    final selectedPerson = hits[id];
+    final data = selectedPerson.data().entries.toList();
 
     final personalieMap =
         data.where((element) => element.key == "personalie").toList();
@@ -28,8 +31,9 @@ class PersonHitProvider extends ChangeNotifier {
     return personalieMap.first.value["Rufname"];
   }
 
-  String getNachname(QueryDocumentSnapshot person) {
-    final data = person.data().entries.toList();
+  String getNachname(String id) {
+    final selectedPerson = hits[id];
+    final data = selectedPerson.data().entries.toList();
 
     final personalieMap =
         data.where((element) => element.key == "personalie").toList();
@@ -37,8 +41,9 @@ class PersonHitProvider extends ChangeNotifier {
     return personalieMap.first.value["nachname"]["name"];
   }
 
-  String getBday(QueryDocumentSnapshot person) {
-    final data = person.data().entries.toList();
+  String getBday(String id) {
+    final selectedPerson = hits[id];
+    final data = selectedPerson.data().entries.toList();
 
     final personalieMap =
         data.where((element) => element.key == "personalie").toList();
@@ -46,10 +51,9 @@ class PersonHitProvider extends ChangeNotifier {
     return personalieMap.first.value["geburtsdatum"]["bis"];
   }
 
-  bool isDangerous(QueryDocumentSnapshot person) {
-    final selectedPerson =
-        hits.keys.where((element) => element == person).toList();
-    final dataForPerson = selectedPerson[0].data().entries.toList();
+  bool isDangerous(String id) {
+    final selectedPerson = hits[id];
+    final dataForPerson = selectedPerson.data().entries.toList();
     final danger =
         dataForPerson.where((element) => element.key == "Fahndung").toList();
     if (danger != null) {

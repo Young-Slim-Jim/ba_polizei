@@ -205,9 +205,11 @@ class _VivaPersonState extends State<VivaPerson> {
       final String bdayFB = personalieMap.first.value["geburtsdatum"]["bis"];
       final hits = Provider.of<PersonHitProvider>(context, listen: false);
 
-      if (vornameFB.toLowerCase() == vornameController.text.toLowerCase() &&
-          nachnameFB.toLowerCase() == nameController.text.toLowerCase() &&
-          bdayFB.toLowerCase() == formatbday()) {
+      if (vornameFB.toLowerCase() ==
+              vornameController.text.toLowerCase().trim() &&
+          nachnameFB.toLowerCase() ==
+              nameController.text.toLowerCase().trim() &&
+          bdayFB.toLowerCase().trim() == formatbday()) {
         if (erweitert == false) {
           hits.addHit(person);
         } else {
