@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
       ],
       routes: <String, WidgetBuilder>{
         '/MainScreenDetails': (context) => MainScreenSelectedResult(),
-        '/WeitereDetails': (context) => WeitereDetails(),
       },
       theme: ThemeData(
         primaryColor: Platform.isIOS ? Color(0xff00416d) : Color(0xff1d2d50),

@@ -27,17 +27,17 @@ class _ResultScreenState extends State<ResultScreen> {
                   .changeSelection(hitsProvider.hits.keys.toList()[index]);
             },
             child: PersonAnimatedContainer(
-              danger: hitsProvider
-                  .isDangerous(hitsProvider.hits.keys.toList()[index]),
-              vorname: hitsProvider
-                  .getVorname(hitsProvider.hits.keys.toList()[index]),
-              nachname: hitsProvider
-                  .getNachname(hitsProvider.hits.keys.toList()[index]),
-              bday:
-                  hitsProvider.getBday(hitsProvider.hits.keys.toList()[index]),
-              selected: hitsProvider
-                  .isSelected(hitsProvider.hits.keys.toList()[index]),
-            ),
+                danger: hitsProvider
+                    .isDangerous(hitsProvider.hits.keys.toList()[index]),
+                vorname: hitsProvider
+                    .getVorname(hitsProvider.hits.keys.toList()[index]),
+                nachname: hitsProvider
+                    .getNachname(hitsProvider.hits.keys.toList()[index]),
+                bday: hitsProvider
+                    .getBday(hitsProvider.hits.keys.toList()[index]),
+                selected: hitsProvider
+                    .isSelected(hitsProvider.hits.keys.toList()[index]),
+                id: hitsProvider.hits.keys.toList()[index]),
           );
         },
       ),

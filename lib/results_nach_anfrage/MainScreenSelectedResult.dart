@@ -1,3 +1,4 @@
+import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/displayDropdown.dart';
@@ -8,12 +9,45 @@ import 'package:provider/provider.dart';
 import 'displayData.dart';
 
 class MainScreenSelectedResult extends StatefulWidget {
+  final String id;
+
+  MainScreenSelectedResult({this.id});
   @override
   _MainScreenSelectedResultState createState() =>
       _MainScreenSelectedResultState();
 }
 
 class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
+  String name;
+  String nachname;
+  String bday;
+  String ausschreibungsanlass;
+  String bdayOrt;
+  String geschlecht;
+  String staatsangehoerigkeit;
+  String statusDerP;
+  String angelegtAm;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final hitsProvider =
+          Provider.of<PersonHitProvider>(context, listen: false);
+      setState(() {
+        name = hitsProvider.getVorname(widget.id);
+        nachname = hitsProvider.getNachname(widget.id);
+        bday = transformBday(hitsProvider.getBday(widget.id));
+        ausschreibungsanlass = hitsProvider.getAusschreibungsanlass(widget.id);
+        bdayOrt = hitsProvider.getBdayOrt(widget.id);
+        geschlecht = hitsProvider.getGeschlecht(widget.id);
+        staatsangehoerigkeit = hitsProvider.getStaatsangehoerigkeit(widget.id);
+        statusDerP = hitsProvider.getGeschlecht(widget.id);
+        angelegtAm = hitsProvider.getAngelegtAm(widget.id);
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +62,21 @@ class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
           children: [
             ChipNavigator(),
             DisplayData(
-                label: "Aschreibungsanlass/-zweck", content: "Straftat"),
-            DisplayData(label: "Aktive Fahndungen", content: "2"),
-            DisplayData(label: "Familien- / Ehename", content: "Atze"),
-            DisplayData(label: "Vorname", content: "Atzig"),
-            DisplayData(label: "Geburtsdatum", content: "20.04.2020"),
-            DisplayData(label: "Geburtsort", content: "Berlin"),
-            DisplayData(label: "Geschlecht", content: "männlich"),
-            DisplayData(label: "Staatsangehörigkeit", content: "deutsch"),
+                label: "Auschreibungsanlass/-zweck",
+                content: ausschreibungsanlass),
+            DisplayData(label: "Aktive Fahndungen", content: "1"),
+            DisplayData(label: "Familien- / Ehename", content: nachname),
+            DisplayData(label: "Vorname", content: name),
+            DisplayData(label: "Geburtsdatum", content: bday),
+            DisplayData(label: "Geburtsort", content: bdayOrt),
+            DisplayData(label: "Geschlecht", content: geschlecht),
             DisplayData(
-                label: "Status der Personalie", content: "wie auch immer"),
-            DisplayData(label: "Angelegt am", content: "gestern"),
+                label: "Staatsangehörigkeit", content: staatsangehoerigkeit),
+            DisplayData(label: "Status der Personalie", content: statusDerP),
+            DisplayData(label: "Angelegt am", content: angelegtAm),
             DisplayDropdown(
               text: "weitere Details",
-              pushWidget: WeitereDetails(),
+              pushWidget: WeitereDetails(widget.id),
               chip: GestureDetector(
                 onTap: () {
                   final chips =
@@ -66,5 +101,13 @@ class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
         ),
       ),
     );
+  }
+
+  String transformBday(String unformatted) {
+    String jahr = unformatted.substring(0, 4);
+    String monat = unformatted.substring(5, 7);
+    String tag = unformatted.substring(8, 10);
+    String formatiert = tag + "." + monat + "." + jahr;
+    return formatiert;
   }
 }

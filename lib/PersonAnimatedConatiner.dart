@@ -10,12 +10,14 @@ class PersonAnimatedContainer extends StatefulWidget {
   String bday;
   bool danger;
   bool selected;
+  String id;
   PersonAnimatedContainer({
     this.nachname,
     this.vorname,
     this.bday,
     this.danger,
     this.selected,
+    this.id,
     Key key,
   }) : super(key: key);
 
@@ -121,7 +123,8 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                           MaterialPageRoute(
                             settings:
                                 RouteSettings(name: "MainScreenSelectedResult"),
-                            builder: (context) => MainScreenSelectedResult(),
+                            builder: (context) =>
+                                MainScreenSelectedResult(id: widget.id),
                           ),
                         );
                       },
