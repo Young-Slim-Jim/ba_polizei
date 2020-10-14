@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ba_polizei/cupertinoLoadingSheet.dart';
 import 'package:ba_polizei/listsammlung.dart';
 import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/resultScreen.dart';
@@ -49,14 +50,32 @@ class _VivaPersonState extends State<VivaPerson> {
       TextEditingController(text: "...");
   TextEditingController rollenController = TextEditingController(text: "...");
 
+  final _formKeyAbfragegrund = GlobalKey<FormState>();
+  final _formKeyName = GlobalKey<FormState>();
+  final _formKeyVorname = GlobalKey<FormState>();
+  final _formKeyBday = GlobalKey<FormState>();
+  final _formkeyGeburtsland = GlobalKey<FormState>();
+  final _formkeyStaatsangehoerigkeit = GlobalKey<FormState>();
+  final _formkeyRolle = GlobalKey<FormState>();
+  final _formkeyGeschlecht = GlobalKey<FormState>();
+  final _formkeySpitzname = GlobalKey<FormState>();
+  final _formkeyGeburtsort = GlobalKey<FormState>();
+  final _formkeyGeburtsname = GlobalKey<FormState>();
   void initState() {
     super.initState();
     nameFocus.addListener(() {
       setState(() {});
     });
+    login();
+
     vornameFocus.addListener(() {
       setState(() {});
     });
+  }
+
+  Future<void> login() async {
+    final user = await FirebaseAuth.instance.signInAnonymously();
+    print(user.user.uid);
   }
 
   @override
@@ -123,8 +142,7 @@ class _VivaPersonState extends State<VivaPerson> {
                             TextSpan(
                                 text: ' plxtu62',
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).textSelectionColor)),
+                                    color: Theme.of(context).hoverColor)),
                           ],
                         ),
                       ),
@@ -139,8 +157,11 @@ class _VivaPersonState extends State<VivaPerson> {
         child: Scrollbar(
           child: ListView(
             children: [
-              searchSheettextfield("Abfragegrund",
-                  Listsammlung().getAbfragegruende(), abfragegrundController),
+              searchSheettextfield(
+                  "Abfragegrund",
+                  Listsammlung().getAbfragegruende(),
+                  abfragegrundController,
+                  _formKeyAbfragegrund),
               ergaenzungstextTextfield(),
               nameTextfield(),
               vornameTextfield(),
@@ -150,12 +171,42 @@ class _VivaPersonState extends State<VivaPerson> {
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: FlatButton(
                         onPressed: () async {
-                          await selectHits();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultScreen()),
-                          );
+                          if (_formKeyAbfragegrund.currentState.validate() &&
+                              _formKeyName.currentState.validate() &&
+                              _formKeyBday.currentState.validate() &&
+                              _formKeyVorname.currentState.validate()) {
+                            if (erweitert) {
+                              if (_formkeyGeburtsland.currentState.validate() &&
+                                  _formkeyGeburtsname.currentState.validate() &&
+                                  _formkeyGeburtsort.currentState.validate() &&
+                                  _formkeyGeschlecht.currentState.validate() &&
+                                  _formkeyRolle.currentState.validate() &&
+                                  _formkeySpitzname.currentState.validate() &&
+                                  _formkeyStaatsangehoerigkeit.currentState
+                                      .validate()) {
+                                await selectHits();
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ResultScreen()),
+                                );
+                              }
+                            }
+
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (_) => CupertinoLoadingSheet(),
+                            );
+                            await selectHits();
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResultScreen()),
+                            );
+                          }
                         },
                         color: Theme.of(context).accentColor,
                         child: Container(
@@ -188,9 +239,7 @@ class _VivaPersonState extends State<VivaPerson> {
     );
   }
 
-  Future<void> selectHits() async {
-    final user = await FirebaseAuth.instance.signInAnonymously();
-    print(user.user.uid);
+  Future<bool> selectHits() async {
     final CollectionReference personCollection =
         FirebaseFirestore.instance.collection('person');
 
@@ -287,19 +336,23 @@ class _VivaPersonState extends State<VivaPerson> {
   erweiterteTextfields() {
     return Column(
       children: [
-        floatingLabelTextfield("Geburtsort", bdayOrtController),
-        floatingLabelTextfield("Geburtsname", bdaynameController),
-        floatingLabelTextfield("Spitzname", nicknameController),
+        floatingLabelTextfield(
+            "Geburtsort", bdayOrtController, _formkeyGeburtsort),
+        floatingLabelTextfield(
+            "Geburtsname", bdaynameController, _formkeyGeburtsname),
+        floatingLabelTextfield(
+            "Spitzname", nicknameController, _formkeySpitzname),
         searchSheettextfield("Geburtsland", Listsammlung().getlaenderNamen(),
-            bdaylandController),
+            bdaylandController, _formkeyGeburtsland),
         searchSheettextfield(
             "Staatsangehörigkeit",
             Listsammlung().getStaatsangehoerigkeiten(),
-            staatsangehoerigkeitController),
+            staatsangehoerigkeitController,
+            _formkeyStaatsangehoerigkeit),
         searchSheettextfield("Geschlecht", Listsammlung().getGeschlecht(),
-            geschlechtsController),
-        searchSheettextfield(
-            "Rolle", Listsammlung().getRollen(), rollenController),
+            geschlechtsController, _formkeyGeschlecht),
+        searchSheettextfield("Rolle", Listsammlung().getRollen(),
+            rollenController, _formkeyRolle),
       ],
     );
   }
@@ -307,80 +360,98 @@ class _VivaPersonState extends State<VivaPerson> {
   Widget floatingLabelTextfield(
     String title,
     TextEditingController controller,
+    GlobalKey<FormState> key,
   ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: title,
-          filled: Platform.isIOS ? false : true,
-          fillColor: Platform.isIOS
-              ? Colors.transparent
-              : Theme.of(context).secondaryHeaderColor,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 5,
+      child: Form(
+        key: key,
+        child: TextFormField(
+          autocorrect: false,
+          validator: (value) {
+            if (checkForDigits(value)) {
+              return "keine Zahlen eingeben";
+            }
+            return null;
+          },
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: title,
+            filled: Platform.isIOS ? false : true,
+            fillColor: Platform.isIOS
+                ? Colors.transparent
+                : Theme.of(context).secondaryHeaderColor,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 5,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget searchSheettextfield(
-    String title,
-    List<String> auswahl,
-    TextEditingController controller,
-  ) {
+  Widget searchSheettextfield(String title, List<String> auswahl,
+      TextEditingController controller, GlobalKey<FormState> formkey) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: TextField(
-        readOnly: true,
-        autofocus: false,
-        onTap: () {
-          Platform.isIOS
-              ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchSheetIOS(
+      child: Form(
+        key: formkey,
+        child: TextFormField(
+          readOnly: true,
+          autofocus: false,
+          onTap: () {
+            Platform.isIOS
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchSheetIOS(
+                        auswahl: auswahl,
+                        title: title,
+                      ),
+                    ),
+                  ).then(
+                    (value) {
+                      setState(
+                        () {
+                          controller.text = value;
+                        },
+                      );
+                    },
+                  )
+                : showDialog(
+                    context: context,
+                    builder: (context) => SearchSheetAndroid(
                       auswahl: auswahl,
                       title: title,
                     ),
-                  ),
-                ).then(
-                  (value) {
-                    setState(
-                      () {
-                        controller.text = value;
-                      },
-                    );
-                  },
-                )
-              : showDialog(
-                  context: context,
-                  builder: (context) => SearchSheetAndroid(
-                    auswahl: auswahl,
-                    title: title,
-                  ),
-                );
-        },
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: title,
-          filled: Platform.isIOS ? false : true,
-          fillColor: Platform.isIOS
-              ? Colors.transparent
-              : Theme.of(context).secondaryHeaderColor,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 5,
-          ),
-          suffixIcon: SizedBox(
-            height: 15,
-            child: Icon(
-              Icons.arrow_drop_down,
-              color: Theme.of(context).textSelectionColor,
+                  );
+          },
+          controller: controller,
+          validator: (value) {
+            if (value == "Bitte auswählen") {
+              return title + " auswählen!";
+            }
+            return null;
+          },
+          autocorrect: false,
+          decoration: InputDecoration(
+            labelText: title,
+            filled: Platform.isIOS ? false : true,
+            fillColor: Platform.isIOS
+                ? Colors.transparent
+                : Theme.of(context).secondaryHeaderColor,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 5,
+            ),
+            suffixIcon: SizedBox(
+              height: 15,
+              child: Icon(
+                Icons.arrow_drop_down,
+                color: Theme.of(context).hoverColor,
+              ),
             ),
           ),
         ),
@@ -539,27 +610,40 @@ class _VivaPersonState extends State<VivaPerson> {
       child: Stack(
         alignment: Alignment.centerRight,
         children: <Widget>[
-          TextField(
-            controller: bdayController,
-            focusNode: bdayFocus,
-            autofocus: false,
-            decoration: InputDecoration(
-              labelText: "Geburtsdatum",
-              hintText: "01.01.2001",
-              filled: Platform.isIOS ? false : true,
-              fillColor: Platform.isIOS
-                  ? Colors.transparent
-                  : Theme.of(context).secondaryHeaderColor,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 5,
+          Form(
+            key: _formKeyBday,
+            child: TextFormField(
+              autocorrect: false,
+              validator: (value) {
+                if (checkForWords(value)) {
+                  return "Datum darf nicht als Buchstaben bestehen!";
+                }
+                if (value.isEmpty) {
+                  return "Geburtsdatum angeben!";
+                }
+                return null;
+              },
+              controller: bdayController,
+              focusNode: bdayFocus,
+              autofocus: false,
+              decoration: InputDecoration(
+                labelText: "Geburtsdatum",
+                hintText: "01.01.2001",
+                filled: Platform.isIOS ? false : true,
+                fillColor: Platform.isIOS
+                    ? Colors.transparent
+                    : Theme.of(context).secondaryHeaderColor,
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 5,
+                ),
               ),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.calendar_today,
-                color: Theme.of(context).textSelectionColor),
+            icon:
+                Icon(Icons.calendar_today, color: Theme.of(context).hoverColor),
             onPressed: () async {
               Platform.isAndroid
                   ? showAndroidDatePicker()
@@ -579,7 +663,6 @@ class _VivaPersonState extends State<VivaPerson> {
       (value) => setState(
         () {
           bdayController.text = DateFormat('dd.MM.yyyy').format(value);
-          bdayFocus.requestFocus();
         },
       ),
     );
@@ -596,7 +679,6 @@ class _VivaPersonState extends State<VivaPerson> {
       (value) {
         setState(() {
           bdayController.text = DateFormat('dd.MM.yyyy').format(value);
-          bdayFocus.requestFocus();
         });
       },
     );
@@ -609,32 +691,48 @@ class _VivaPersonState extends State<VivaPerson> {
         child: Stack(
           alignment: Alignment.centerRight,
           children: <Widget>[
-            TextField(
-              autofocus: false,
-              controller: nameController,
-              focusNode: nameFocus,
-              decoration: InputDecoration(
-                labelText: "Name",
-                filled: Platform.isIOS ? false : true,
-                fillColor: Platform.isIOS
-                    ? Colors.transparent
-                    : Theme.of(context).secondaryHeaderColor,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 5,
+            Form(
+              key: _formKeyName,
+              child: TextFormField(
+                autocorrect: false,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Bitte einen Nachnamen eingeben";
+                  }
+                  if (checkForDigits(value)) {
+                    return "Der Name darf keine Zahlen enthalten";
+                  }
+                  if (value.length < 2) {
+                    return "Der Name ist zu kurz";
+                  }
+                  return null;
+                },
+                autofocus: false,
+                controller: nameController,
+                focusNode: nameFocus,
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  filled: Platform.isIOS ? false : true,
+                  fillColor: Platform.isIOS
+                      ? Colors.transparent
+                      : Theme.of(context).secondaryHeaderColor,
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 5,
+                  ),
                 ),
               ),
             ),
             nameFocus.hasFocus
                 ? IconButton(
-                    icon: Icon(Icons.close,
-                        color: Theme.of(context).textSelectionColor),
+                    icon:
+                        Icon(Icons.close, color: Theme.of(context).hoverColor),
                     onPressed: () => nameController.clear())
                 : IconButton(
                     icon: Icon(
                       Icons.switch_camera,
-                      color: Theme.of(context).textSelectionColor,
+                      color: Theme.of(context).hoverColor,
                     ),
                     onPressed: () {
                       String savetext;
@@ -654,45 +752,62 @@ class _VivaPersonState extends State<VivaPerson> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Container(
-        child: Stack(
-          alignment: Alignment.centerRight,
-          children: <Widget>[
-            TextField(
-              autofocus: false,
-              controller: vornameController,
-              focusNode: vornameFocus,
-              decoration: InputDecoration(
-                labelText: "Voramen",
-                filled: Platform.isIOS ? false : true,
-                fillColor: Platform.isIOS
-                    ? Colors.transparent
-                    : Theme.of(context).secondaryHeaderColor,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 5,
+        child: Form(
+          key: _formKeyVorname,
+          child: Stack(
+            alignment: Alignment.centerRight,
+            children: <Widget>[
+              TextFormField(
+                autocorrect: false,
+                autofocus: false,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Bitte einen Nachnamen eingeben";
+                  }
+                  if (checkForDigits(value)) {
+                    return "Der Name darf keine Zahlen enthalten";
+                  }
+                  if (value.length < 2) {
+                    return "Der Name ist zu kurz";
+                  }
+                  return null;
+                },
+                controller: vornameController,
+                focusNode: vornameFocus,
+                decoration: InputDecoration(
+                  labelText: "Voramen",
+                  filled: Platform.isIOS ? false : true,
+                  fillColor: Platform.isIOS
+                      ? Colors.transparent
+                      : Theme.of(context).secondaryHeaderColor,
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 5,
+                  ),
                 ),
               ),
-            ),
-            vornameFocus.hasFocus
-                ? IconButton(
-                    icon: Icon(Icons.close,
-                        color: Theme.of(context).textSelectionColor),
-                    onPressed: () => vornameController.clear())
-                : IconButton(
-                    icon: Icon(Icons.switch_camera,
-                        color: Theme.of(context).textSelectionColor),
-                    onPressed: () {
-                      // nameFocus.unfocus();
-                      // vornameFocus.unfocus();
-                      String savetext;
-                      savetext = nameController.text;
-                      nameController.text = vornameController.text;
-                      vornameController.text = savetext;
-                      vornameController.selection = TextSelection.fromPosition(
-                          TextPosition(offset: vornameController.text.length));
-                    }),
-          ],
+              vornameFocus.hasFocus
+                  ? IconButton(
+                      icon: Icon(Icons.close,
+                          color: Theme.of(context).hoverColor),
+                      onPressed: () => vornameController.clear())
+                  : IconButton(
+                      icon: Icon(Icons.switch_camera,
+                          color: Theme.of(context).hoverColor),
+                      onPressed: () {
+                        // nameFocus.unfocus();
+                        // vornameFocus.unfocus();
+                        String savetext;
+                        savetext = nameController.text;
+                        nameController.text = vornameController.text;
+                        vornameController.text = savetext;
+                        vornameController.selection =
+                            TextSelection.fromPosition(TextPosition(
+                                offset: vornameController.text.length));
+                      }),
+            ],
+          ),
         ),
       ),
     );
@@ -703,6 +818,7 @@ class _VivaPersonState extends State<VivaPerson> {
       padding: const EdgeInsets.only(bottom: 12.0),
       child: TextField(
         autofocus: false,
+        autocorrect: false,
         controller: ergaenzungController,
         decoration: InputDecoration(
           filled: Platform.isIOS ? false : true,
@@ -717,5 +833,15 @@ class _VivaPersonState extends State<VivaPerson> {
         ),
       ),
     );
+  }
+
+  bool checkForWords(String input) {
+    RegExp _letter = RegExp(r'[a-z]');
+    return _letter.hasMatch(input);
+  }
+
+  bool checkForDigits(String input) {
+    RegExp _numeric = RegExp(r'\d');
+    return _numeric.hasMatch(input);
   }
 }

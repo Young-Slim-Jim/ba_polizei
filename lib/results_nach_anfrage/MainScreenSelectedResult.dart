@@ -57,7 +57,7 @@ class _MainScreenSelectedResultState extends State<MainScreenSelectedResult> {
         actions: [Icon(Icons.share)],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: ListView(
           children: [
             ChipNavigator(),

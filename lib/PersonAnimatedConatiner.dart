@@ -1,3 +1,4 @@
+import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/MainScreenSelectedResult.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,12 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                     flex: 30,
                     child: GestureDetector(
                       onTap: () {
+                        final hitsProvider = Provider.of<PersonHitProvider>(
+                            context,
+                            listen: false);
+
+                        hitsProvider.resetSelection();
+
                         final chips =
                             Provider.of<ChipProvider>(context, listen: false);
                         chips.addChip(

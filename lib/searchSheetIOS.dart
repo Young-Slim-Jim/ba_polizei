@@ -13,6 +13,7 @@ class SearchSheetIOS extends StatefulWidget {
 
 class _SearchSheetIOSState extends State<SearchSheetIOS> {
   List<String> gefiltert = [];
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +63,27 @@ class _SearchSheetIOSState extends State<SearchSheetIOS> {
               padding: const EdgeInsets.only(
                   left: 16.0, right: 16, bottom: 10, top: 5),
               child: Container(
+                height: height * 0.06,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: TextField(
+                  controller: searchController,
                   onChanged: (text) {
                     filter(text);
                   },
+                  textAlign: TextAlign.start,
                   autofocus: false,
+                  autocorrect: false,
                   decoration: InputDecoration(
+                      suffixIcon:
+                          gefiltert.length != 0 && gefiltert.length != 122
+                              ? GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      searchController.clear();
+                                    });
+                                  },
+                                  child: Icon(Icons.cancel))
+                              : Container(),
                       prefixIcon: Icon(
                         Icons.search,
                       ),
@@ -79,7 +92,7 @@ class _SearchSheetIOSState extends State<SearchSheetIOS> {
                             color: Theme.of(context).secondaryHeaderColor),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: Theme.of(context).secondaryHeaderColor),
                         borderRadius: BorderRadius.all(Radius.circular(10)),

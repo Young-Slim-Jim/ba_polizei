@@ -11,6 +11,11 @@ class PersonHitProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void resetSelection() {
+    selected.updateAll((key, value) => false);
+    notifyListeners();
+  }
+
   void changeSelection(String id) {
     selected.updateAll((key, value) => false);
     selected.update(id, (value) => true);
