@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:ba_polizei/cupertinoLoadingSheet.dart';
+import 'package:ba_polizei/widgets/androidLoadingSheet.dart';
+import 'package:ba_polizei/widgets/cupertinoLoadingSheet.dart';
 import 'package:ba_polizei/listsammlung.dart';
 import 'package:ba_polizei/personHitsProvider.dart';
-import 'package:ba_polizei/resultScreen.dart';
-import 'package:ba_polizei/searchSheetAndroid.dart';
-import 'package:ba_polizei/searchSheetIOS.dart';
-import 'package:ba_polizei/cupertinoDialog.dart';
+import 'package:ba_polizei/screens/resultScreen.dart';
+import 'package:ba_polizei/widgets/searchSheetAndroid.dart';
+import 'package:ba_polizei/widgets/searchSheetIOS.dart';
+import 'package:ba_polizei/widgets/cupertinoDialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,7 +84,9 @@ class _VivaPersonState extends State<VivaPerson> {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(height * 0.113),
+        preferredSize: Platform.isIOS
+            ? Size.fromHeight(height * 0.113)
+            : Size.fromHeight(height * 0.14),
         child: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
           leading: IconButton(
@@ -114,7 +117,8 @@ class _VivaPersonState extends State<VivaPerson> {
               Expanded(
                   flex: 13,
                   child: IconButton(
-                      icon: Icon(CupertinoIcons.search), onPressed: () => {})),
+                      icon: Icon(CupertinoIcons.search),
+                      onPressed: () => {searchForPerson()})),
             ],
           ),
           centerTitle: true,
@@ -171,42 +175,7 @@ class _VivaPersonState extends State<VivaPerson> {
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: FlatButton(
                         onPressed: () async {
-                          if (_formKeyAbfragegrund.currentState.validate() &&
-                              _formKeyName.currentState.validate() &&
-                              _formKeyBday.currentState.validate() &&
-                              _formKeyVorname.currentState.validate()) {
-                            if (erweitert) {
-                              if (_formkeyGeburtsland.currentState.validate() &&
-                                  _formkeyGeburtsname.currentState.validate() &&
-                                  _formkeyGeburtsort.currentState.validate() &&
-                                  _formkeyGeschlecht.currentState.validate() &&
-                                  _formkeyRolle.currentState.validate() &&
-                                  _formkeySpitzname.currentState.validate() &&
-                                  _formkeyStaatsangehoerigkeit.currentState
-                                      .validate()) {
-                                await selectHits();
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ResultScreen()),
-                                );
-                              }
-                            }
-
-                            showCupertinoDialog(
-                              context: context,
-                              builder: (_) => CupertinoLoadingSheet(),
-                            );
-                            await selectHits();
-                            Navigator.of(context, rootNavigator: true)
-                                .pop('dialog');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ResultScreen()),
-                            );
-                          }
+                          searchForPerson();
                         },
                         color: Theme.of(context).accentColor,
                         child: Container(
@@ -239,7 +208,46 @@ class _VivaPersonState extends State<VivaPerson> {
     );
   }
 
-  Future<bool> selectHits() async {
+  Future<void> searchForPerson() async {
+    if (_formKeyAbfragegrund.currentState.validate() &&
+        _formKeyName.currentState.validate() &&
+        _formKeyBday.currentState.validate() &&
+        _formKeyVorname.currentState.validate()) {
+      if (erweitert) {
+        if (_formkeyGeburtsland.currentState.validate() &&
+            _formkeyGeburtsname.currentState.validate() &&
+            _formkeyGeburtsort.currentState.validate() &&
+            _formkeyGeschlecht.currentState.validate() &&
+            _formkeyRolle.currentState.validate() &&
+            _formkeySpitzname.currentState.validate() &&
+            _formkeyStaatsangehoerigkeit.currentState.validate()) {
+          await selectHits();
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ResultScreen()),
+          );
+        }
+      }
+
+      Platform.isIOS
+          ? showCupertinoDialog(
+              context: context,
+              builder: (_) => CupertinoLoadingSheet(),
+            )
+          : showDialog(
+              context: context,
+              builder: (BuildContext context) => AndroidLoadingSheet());
+      await selectHits();
+      Navigator.of(context, rootNavigator: true).pop('dialog');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultScreen()),
+      );
+    }
+  }
+
+  Future<void> selectHits() async {
     final CollectionReference personCollection =
         FirebaseFirestore.instance.collection('person');
 
@@ -426,6 +434,14 @@ class _VivaPersonState extends State<VivaPerson> {
                       auswahl: auswahl,
                       title: title,
                     ),
+                  ).then(
+                    (value) {
+                      setState(
+                        () {
+                          controller.text = value;
+                        },
+                      );
+                    },
                   );
           },
           controller: controller,
@@ -729,19 +745,21 @@ class _VivaPersonState extends State<VivaPerson> {
                     icon:
                         Icon(Icons.close, color: Theme.of(context).hoverColor),
                     onPressed: () => nameController.clear())
-                : IconButton(
-                    icon: Icon(
-                      Icons.switch_camera,
-                      color: Theme.of(context).hoverColor,
-                    ),
-                    onPressed: () {
-                      String savetext;
-                      savetext = nameController.text;
-                      nameController.text = vornameController.text;
-                      vornameController.text = savetext;
-                      nameController.selection = TextSelection.fromPosition(
-                          TextPosition(offset: nameController.text.length));
-                    }),
+                : Platform.isIOS
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.switch_camera,
+                          color: Theme.of(context).hoverColor,
+                        ),
+                        onPressed: () {
+                          String savetext;
+                          savetext = nameController.text;
+                          nameController.text = vornameController.text;
+                          vornameController.text = savetext;
+                          nameController.selection = TextSelection.fromPosition(
+                              TextPosition(offset: nameController.text.length));
+                        })
+                    : Container()
           ],
         ),
       ),
@@ -792,20 +810,22 @@ class _VivaPersonState extends State<VivaPerson> {
                       icon: Icon(Icons.close,
                           color: Theme.of(context).hoverColor),
                       onPressed: () => vornameController.clear())
-                  : IconButton(
-                      icon: Icon(Icons.switch_camera,
-                          color: Theme.of(context).hoverColor),
-                      onPressed: () {
-                        // nameFocus.unfocus();
-                        // vornameFocus.unfocus();
-                        String savetext;
-                        savetext = nameController.text;
-                        nameController.text = vornameController.text;
-                        vornameController.text = savetext;
-                        vornameController.selection =
-                            TextSelection.fromPosition(TextPosition(
-                                offset: vornameController.text.length));
-                      }),
+                  : Platform.isIOS
+                      ? IconButton(
+                          icon: Icon(Icons.switch_camera,
+                              color: Theme.of(context).hoverColor),
+                          onPressed: () {
+                            // nameFocus.unfocus();
+                            // vornameFocus.unfocus();
+                            String savetext;
+                            savetext = nameController.text;
+                            nameController.text = vornameController.text;
+                            vornameController.text = savetext;
+                            vornameController.selection =
+                                TextSelection.fromPosition(TextPosition(
+                                    offset: vornameController.text.length));
+                          })
+                      : Container()
             ],
           ),
         ),

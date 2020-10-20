@@ -1,12 +1,12 @@
 import 'package:ba_polizei/personHitsProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/ChipNavigator.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/displayDropdown.dart';
-import 'package:ba_polizei/results_nach_anfrage/weitereDetails.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/displayDropdown.dart';
+import 'package:ba_polizei/results_nach_anfrage/screens/weitereDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'displayData.dart';
+import '../widgets/displayData.dart';
 
 class MainScreenSelectedResult extends StatefulWidget {
   final String id;

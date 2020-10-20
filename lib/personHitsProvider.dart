@@ -26,6 +26,32 @@ class PersonHitProvider extends ChangeNotifier {
     return selected[id];
   }
 
+  List getStaatsangehoerigkeiten(String id) {
+    final selectedPerson = hits[id];
+    final data = selectedPerson.data().entries.toList();
+    final personalieMap =
+        data.where((element) => element.key == "personalie").toList();
+    return personalieMap.first.value["staatsangehörigkeit"];
+  }
+
+  String getGeburstsname(String id) {
+    final selectedPerson = hits[id];
+    final data = selectedPerson.data().entries.toList();
+    final personalieMap =
+        data.where((element) => element.key == "personalie").toList();
+
+    return personalieMap.first.value["geburtsname"]["name"];
+  }
+
+  String getGeburstsland(String id) {
+    final selectedPerson = hits[id];
+    final data = selectedPerson.data().entries.toList();
+    final personalieMap =
+        data.where((element) => element.key == "personalie").toList();
+
+    return personalieMap.first.value["geburtsstaat"]["value"];
+  }
+
   String getSchengen(String id) {
     final selectedPerson = hits[id];
     final data = selectedPerson.data().entries.toList();

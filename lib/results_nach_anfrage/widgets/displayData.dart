@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class DisplayData extends StatelessWidget {
@@ -9,9 +11,13 @@ class DisplayData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12.0),
+      padding: label != "Auschreibungsanlass/-zweck" || label != "Titel"
+          ? const EdgeInsets.only(top: 12.0)
+          : const EdgeInsets.only(top: 0),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: Platform.isIOS
+            ? MediaQuery.of(context).size.height * 0.06
+            : MediaQuery.of(context).size.height * 0.07,
         child: TextField(
           controller: TextEditingController()..text = content,
           readOnly: true,

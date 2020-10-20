@@ -32,7 +32,14 @@ class _SearchSheetAndroidState extends State<SearchSheetAndroid> {
               physics: ScrollPhysics(),
               child: Column(
                 children: [
-                  selectionTile("Auswahl löschen"),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(
+                        context,
+                        widget.title == "Abfragegrund"
+                            ? " Bitte auswählen"
+                            : "..."),
+                    child: selectionTile("Auswahl löschen"),
+                  ),
                   ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -40,9 +47,18 @@ class _SearchSheetAndroidState extends State<SearchSheetAndroid> {
                           ? widget.auswahl.length
                           : gefiltert.length,
                       itemBuilder: (context, index) {
-                        return selectionTile(gefiltert.length == 0
-                            ? widget.auswahl[index]
-                            : gefiltert[index]);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pop(
+                                context,
+                                gefiltert.length == 0
+                                    ? widget.auswahl[index]
+                                    : gefiltert[index]);
+                          },
+                          child: selectionTile(gefiltert.length == 0
+                              ? widget.auswahl[index]
+                              : gefiltert[index]),
+                        );
                       })
                 ],
               ),
@@ -64,12 +80,12 @@ class _SearchSheetAndroidState extends State<SearchSheetAndroid> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 8),
                 child: Text(text,
                     style: text == "Auswahl löschen"
                         ? TextStyle(
                             fontStyle: FontStyle.italic,
-                            color: Theme.of(context).textSelectionColor,
+                            color: Theme.of(context).hoverColor,
                             fontSize: 18)
                         : TextStyle(fontSize: 14)),
               ),

@@ -1,6 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/MainScreenSelectedResult.dart';
+import 'package:ba_polizei/results_nach_anfrage/screens/MainScreenSelectedResult.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,7 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Flexible(
-                            child: Text(
+                            child: AutoSizeText(
                               widget.nachname +
                                   ", " +
                                   widget.vorname +
@@ -74,7 +75,7 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                           widget.danger
                               ? Flexible(
                                   fit: FlexFit.tight,
-                                  child: Text(
+                                  child: AutoSizeText(
                                     "Achtung! Zur Person existiert mindestens eine eingeleitete Fahndung.",
                                     style: TextStyle(fontSize: 16),
                                     maxLines: widget.selected ? 2 : 1,

@@ -1,8 +1,8 @@
 import 'package:ba_polizei/personHitsProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/ChipNavigator.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/displayData.dart';
-import 'package:ba_polizei/results_nach_anfrage/displayDropdown.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/displayData.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/displayDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -127,7 +127,6 @@ class _PersonenfandungsnotierungState extends State<Personenfandungsnotierung> {
                     label: "besitzende Behörde",
                     content: besitzendeBehoerde,
                   ),
-                  DisplayDropdown(text: "Fremdobjektreferenz")
                 ],
               ),
             ),

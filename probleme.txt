@@ -3,3 +3,5 @@
 2. man kann ann den automatisch erstellten back button keinen text anhängen.
 
 3. textfield suffixicon iconbutton führt immer dazu, dass das textfield ausgewählt wird, daher musste ein workaround mit einem Stack gebaut werden.
+
+4. Cupertino Dialog farbe ist hardcoded

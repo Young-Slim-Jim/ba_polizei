@@ -1,11 +1,11 @@
 import 'package:ba_polizei/personHitsProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/ChipNavigator.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/ChipNavigator.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
-import 'package:ba_polizei/results_nach_anfrage/anschrift.dart';
-import 'package:ba_polizei/results_nach_anfrage/displayData.dart';
-import 'package:ba_polizei/results_nach_anfrage/displayDropdown.dart';
-import 'package:ba_polizei/results_nach_anfrage/personalie.dart';
-import 'package:ba_polizei/results_nach_anfrage/personenfandungsnotierung.dart';
+import 'package:ba_polizei/results_nach_anfrage/screens/anschrift.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/displayData.dart';
+import 'package:ba_polizei/results_nach_anfrage/widgets/displayDropdown.dart';
+import 'package:ba_polizei/results_nach_anfrage/screens/personalie.dart';
+import 'package:ba_polizei/results_nach_anfrage/screens/personenfandungsnotierung.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +80,7 @@ class _WeitereDetailsState extends State<WeitereDetails> {
               ),
               DisplayDropdown(
                 text: "Personalie",
-                pushWidget: Personalie("Personalie"),
+                pushWidget: Personalie(ident: "Personalie", id: widget.id),
                 chip: GestureDetector(
                   onTap: () {
                     Navigator.popUntil(
