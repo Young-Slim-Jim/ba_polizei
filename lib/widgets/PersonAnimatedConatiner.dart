@@ -3,6 +3,8 @@ import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/screens/MainScreenSelectedResult.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -56,10 +58,15 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   children: [
-                    Expanded(flex: 2, child: Icon(Icons.dangerous)),
+                    Expanded(
+                      flex: 2,
+                      child: FaIcon(FontAwesomeIcons.exclamation,
+                          color: widget.selected ? Colors.red : Colors.white),
+                    ),
                     Expanded(
                       flex: 11,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Flexible(
@@ -69,16 +76,22 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                                   widget.vorname +
                                   ", " +
                                   widget.bday,
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  color: widget.selected
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                           ),
                           widget.danger
                               ? Flexible(
-                                  fit: FlexFit.tight,
                                   child: AutoSizeText(
                                     "Achtung! Zur Person existiert mindestens eine eingeleitete Fahndung.",
-                                    style: TextStyle(fontSize: 16),
                                     maxLines: widget.selected ? 2 : 1,
+                                    style: TextStyle(
+                                        color: widget.selected
+                                            ? Colors.white
+                                            : Colors.black),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 )
@@ -141,6 +154,7 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                         child: Text(
                           "Details anzeigen",
                           textAlign: TextAlign.right,
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),

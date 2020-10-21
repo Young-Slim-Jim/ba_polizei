@@ -6,22 +6,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../icons/Grid Icons/grid_icons_icons.dart' as CustomIcons;
+
 class StartScreen extends StatelessWidget {
   final List grids = [
-    ["ViVA/INPOL/SIS", "PERSON", FontAwesomeIcons.affiliatetheme],
-    ["ViVA", "Vorgang", FontAwesomeIcons.alipay],
-    ["ViVA", "Person", FontAwesomeIcons.batteryQuarter],
-    ["INPOL", "Person", FontAwesomeIcons.bell],
-    ["SIS", "Person", FontAwesomeIcons.diceFive],
-    ["ViVA", "Kfz", FontAwesomeIcons.car],
-    ["ViVA", "Sachtyp unbekannt", FontAwesomeIcons.solidQuestionCircle],
-    ["Inpol", "Sache", FontAwesomeIcons.chromecast],
-    ["Sis", "Sache", FontAwesomeIcons.ember],
-    ["EMA", "Meldedaten", FontAwesomeIcons.dolly],
-    ["Zevis", "ZFZR Person", FontAwesomeIcons.circleNotch],
-    ["ZEVIS", "ZFZR Kfz und Halter", FontAwesomeIcons.handPointer],
-    ["ZEVIS", "ZFER Person", FontAwesomeIcons.solidCopy],
-    ["ZEVIS", "ZFER Sache", FontAwesomeIcons.smileBeam],
+    ["ViVA/INPOL/SIS", "PERSON", CustomIcons.GridIcons.customer_insight],
+    ["ViVA", "Vorgang", CustomIcons.GridIcons.binder],
+    ["ViVA", "Person", CustomIcons.GridIcons.find_user_male],
+    ["INPOL", "Person", CustomIcons.GridIcons.find_user_male],
+    ["SIS", "Person", CustomIcons.GridIcons.find_user_male],
+    ["ViVA", "Kfz", CustomIcons.GridIcons.car],
+    [
+      "ViVA",
+      "Sachtyp unbekannt",
+      CustomIcons.GridIcons.binder,
+    ],
+    ["Inpol", "Sache", CustomIcons.GridIcons.driving_guidelines],
+    ["Sis", "Sache", CustomIcons.GridIcons.driving_guidelines],
+    ["EMA", "Meldedaten", CustomIcons.GridIcons.contact_card],
+    ["Zevis", "ZFZR Person", CustomIcons.GridIcons.find_user_male],
+    ["ZEVIS", "ZFZR Kfz und Halter", CustomIcons.GridIcons.driving_guidelines],
+    ["ZEVIS", "ZFER Person", CustomIcons.GridIcons.find_user_male],
+    ["ZEVIS", "ZFER Sache", CustomIcons.GridIcons.car],
   ];
   @override
   Widget build(BuildContext context) {
@@ -48,7 +54,9 @@ class StartScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(height * 0.113),
+          preferredSize: Platform.isIOS
+              ? Size.fromHeight(height * 0.113)
+              : Size.fromHeight(height * 0.14),
           child: AppBar(
             iconTheme: IconThemeData(color: Theme.of(context).accentColor),
             automaticallyImplyLeading: false,

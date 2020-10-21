@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:ba_polizei/icons/AndroidIcons/android_icons_icons.dart';
 import 'package:ba_polizei/personHitsProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/widgets/ChipNavigator.dart';
 import 'package:ba_polizei/results_nach_anfrage/ChipProvider.dart';
 import 'package:ba_polizei/results_nach_anfrage/widgets/displayData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:ba_polizei/icons/IOScons/i_o_s_icons_icons.dart' as IOScons;
 
 class Anschrift extends StatefulWidget {
   final String ident;
@@ -82,7 +87,12 @@ class _AnschriftState extends State<Anschrift> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
           title: Text("ViVA Person"),
-          actions: [Icon(Icons.share)],
+          actions: [
+            Platform.isIOS
+                ? Icon(IOScons.IOSIcons.square_and_arrow_up)
+                : Icon(IOScons.IOSIcons.square_and_arrow_up),
+            Icon(AndroidIcons.account_box_outline)
+          ],
         ),
         body: SingleChildScrollView(
           child: SafeArea(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ba_polizei/results_nach_anfrage/widgets/VivaAppbar.dart';
 import 'package:ba_polizei/widgets/androidLoadingSheet.dart';
 import 'package:ba_polizei/widgets/cupertinoLoadingSheet.dart';
 import 'package:ba_polizei/listsammlung.dart';
@@ -14,6 +15,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import 'package:ba_polizei/icons/IOScons/i_o_s_icons_icons.dart' as IOScons;
+import 'package:ba_polizei/icons/AndroidIcons/android_icons_icons.dart'
+    as AndroidIcons;
 
 class VivaPerson extends StatefulWidget {
   @override
@@ -108,17 +113,28 @@ class _VivaPersonState extends State<VivaPerson> {
               ),
               Expanded(
                   flex: 13,
-                  child:
-                      IconButton(icon: Icon(Icons.cancel), onPressed: () {})),
+                  child: IconButton(
+                      icon: Platform.isIOS
+                          ? Icon(IOScons.IOSIcons.xmark_square)
+                          : Icon(AndroidIcons.AndroidIcons.eraser),
+                      onPressed: () {})),
               Expanded(
                   flex: 13,
                   child: IconButton(
-                      icon: Icon(Icons.scatter_plot), onPressed: () => {})),
+                      icon: Platform.isIOS
+                          ? Icon(IOScons.IOSIcons.doc_text_viewfinder)
+                          : Icon(AndroidIcons
+                              .AndroidIcons.credit_card_scan_outline),
+                      onPressed: () => {})),
               Expanded(
-                  flex: 13,
-                  child: IconButton(
-                      icon: Icon(CupertinoIcons.search),
-                      onPressed: () => {searchForPerson()})),
+                flex: 13,
+                child: IconButton(
+                  icon: Icon(CupertinoIcons.search),
+                  onPressed: () {
+                    searchForPerson();
+                  },
+                ),
+              ),
             ],
           ),
           centerTitle: true,
@@ -603,7 +619,7 @@ class _VivaPersonState extends State<VivaPerson> {
                       children: [
                         Checkbox(
                             value: erweitert,
-                            activeColor: Colors.green,
+                            activeColor: Theme.of(context).hoverColor,
                             onChanged: (bool newValue) {
                               setState(() {
                                 erweitert = newValue;
@@ -658,8 +674,11 @@ class _VivaPersonState extends State<VivaPerson> {
             ),
           ),
           IconButton(
-            icon:
-                Icon(Icons.calendar_today, color: Theme.of(context).hoverColor),
+            icon: Platform.isIOS
+                ? Icon(IOScons.IOSIcons.calendar,
+                    color: Theme.of(context).hoverColor)
+                : Icon(AndroidIcons.AndroidIcons.calendar,
+                    color: Theme.of(context).hoverColor),
             onPressed: () async {
               Platform.isAndroid
                   ? showAndroidDatePicker()
@@ -691,6 +710,15 @@ class _VivaPersonState extends State<VivaPerson> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900, 1),
       lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme:
+                ColorScheme.light(primary: Theme.of(context).primaryColor),
+          ),
+          child: child,
+        );
+      },
     ).then(
       (value) {
         setState(() {
@@ -748,7 +776,7 @@ class _VivaPersonState extends State<VivaPerson> {
                 : Platform.isIOS
                     ? IconButton(
                         icon: Icon(
-                          Icons.switch_camera,
+                          IOScons.IOSIcons.arrow_up_arrow_down,
                           color: Theme.of(context).hoverColor,
                         ),
                         onPressed: () {
@@ -812,7 +840,7 @@ class _VivaPersonState extends State<VivaPerson> {
                       onPressed: () => vornameController.clear())
                   : Platform.isIOS
                       ? IconButton(
-                          icon: Icon(Icons.switch_camera,
+                          icon: Icon(IOScons.IOSIcons.arrow_up_arrow_down,
                               color: Theme.of(context).hoverColor),
                           onPressed: () {
                             // nameFocus.unfocus();

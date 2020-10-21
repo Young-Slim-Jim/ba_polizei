@@ -77,9 +77,35 @@ class _ResultScreenState extends State<ResultScreen> {
                       ),
                     ),
                   )
-                : showDialog(
-                    context: context,
-                    builder: (BuildContext context) => Dialog()),
+                : AlertDialog(
+                    content: Container(
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              "Schnellauskunft",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 22),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              "Keine Treffer.",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      FlatButton(
+                        child: Text('OK'),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    ],
+                  ),
       ),
     );
   }

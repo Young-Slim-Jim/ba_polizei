@@ -11,6 +11,9 @@ class SearchSheetAndroid extends StatefulWidget {
 
 class _SearchSheetAndroidState extends State<SearchSheetAndroid> {
   List<String> gefiltert = [];
+  bool search = false;
+
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -19,12 +22,49 @@ class _SearchSheetAndroidState extends State<SearchSheetAndroid> {
         child: Scaffold(
           appBar: AppBar(
             elevation: 0.0,
-            title: Text(widget.title),
+            title: search
+                ? TextField(
+                    controller: searchController,
+                    autofocus: true,
+                    onChanged: (value) {
+                      filter(value);
+                    },
+                    autocorrect: false,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: widget.title,
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                : Text(widget.title),
             actions: [
-              IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {},
-              ),
+              search
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(
+                          () {
+                            gefiltert = [];
+                            search = !search;
+                          },
+                        );
+                      },
+                    )
+                  : IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        setState(
+                          () {
+                            search = !search;
+                          },
+                        );
+                      },
+                    ),
             ],
           ),
           body: Scrollbar(
@@ -66,6 +106,22 @@ class _SearchSheetAndroidState extends State<SearchSheetAndroid> {
           ),
         ),
       ),
+    );
+  }
+
+  void filter(String text) {
+    setState(
+      () {
+        gefiltert = widget.auswahl
+            .where(
+              (element) => element.toLowerCase().contains(text.toLowerCase()),
+            )
+            .toList();
+
+        if (text != "" && gefiltert.length == 0) {
+          gefiltert = ["Nichts gefunden"];
+        }
+      },
     );
   }
 
