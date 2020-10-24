@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../icons/Grid Icons/grid_icons_icons.dart' as CustomIcons;
 
 class StartScreen extends StatelessWidget {
-  final List grids = [
+  final List gridsiOS = [
     ["ViVA/INPOL/SIS", "PERSON", CustomIcons.GridIcons.customer_insight],
     ["ViVA", "Vorgang", CustomIcons.GridIcons.binder],
     ["ViVA", "Person", CustomIcons.GridIcons.find_user_male],
@@ -25,6 +25,27 @@ class StartScreen extends StatelessWidget {
     ["Sis", "Sache", CustomIcons.GridIcons.driving_guidelines],
     ["EMA", "Meldedaten", CustomIcons.GridIcons.contact_card],
     ["Zevis", "ZFZR Person", CustomIcons.GridIcons.find_user_male],
+    ["ZEVIS", "ZFZR Kfz und Halter", CustomIcons.GridIcons.driving_guidelines],
+    ["ZEVIS", "ZFER Person", CustomIcons.GridIcons.find_user_male],
+    ["ZEVIS", "ZFER Sache", CustomIcons.GridIcons.car],
+  ];
+
+  final List gridsAndroid = [
+    ["POLIKS", "Person", CustomIcons.GridIcons.customer_insight],
+    ["INPOL", "Person", CustomIcons.GridIcons.binder],
+    ["SIS", "Person", CustomIcons.GridIcons.find_user_male],
+    ["POLIKS", "Kfz", CustomIcons.GridIcons.car],
+    ["POLIKS", "Sachtyp unbekannt", CustomIcons.GridIcons.find_user_male],
+    ["INPOL", "Sache", CustomIcons.GridIcons.car],
+    [
+      "ViVA",
+      "Sachtyp unbekannt",
+      CustomIcons.GridIcons.binder,
+    ],
+    ["SIS", "Sache", CustomIcons.GridIcons.car],
+    ["EWW", "Berliner Meldeauskunft", CustomIcons.GridIcons.driving_guidelines],
+    ["EWW", "Bundesweite Meldeauskunft", CustomIcons.GridIcons.contact_card],
+    ["ZEVIS", "ZFZR Person", CustomIcons.GridIcons.find_user_male],
     ["ZEVIS", "ZFZR Kfz und Halter", CustomIcons.GridIcons.driving_guidelines],
     ["ZEVIS", "ZFER Person", CustomIcons.GridIcons.find_user_male],
     ["ZEVIS", "ZFER Sache", CustomIcons.GridIcons.car],
@@ -58,6 +79,7 @@ class StartScreen extends StatelessWidget {
               ? Size.fromHeight(height * 0.113)
               : Size.fromHeight(height * 0.14),
           child: AppBar(
+            elevation: 0.0,
             iconTheme: IconThemeData(color: Theme.of(context).accentColor),
             automaticallyImplyLeading: false,
             title: Row(
@@ -66,7 +88,7 @@ class StartScreen extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    "Abmelden",
+                    Platform.isIOS ? "Abmelden" : "Auskunft",
                     style: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontSize: 17,
@@ -78,7 +100,8 @@ class StartScreen extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 3,
-                  child: Text("Auskunft", style: TextStyle(fontSize: 20)),
+                  child: Text(Platform.isIOS ? "Auskunft" : "",
+                      style: TextStyle(fontSize: 20)),
                 ),
                 Expanded(
                   flex: 2,
@@ -123,18 +146,20 @@ class StartScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 8.0, left: 4.0, right: 4.0),
-          child: CupertinoScrollbar(
+          child: Scrollbar(
             child: GridView.count(
               crossAxisCount: 2,
               children: List.generate(
-                grids.length,
+                Platform.isIOS ? gridsiOS.length : gridsAndroid.length,
                 (index) => Padding(
                   padding:
                       const EdgeInsets.only(left: 2.0, bottom: 4.0, right: 2.0),
                   child: GestureDetector(
                     onTap: () {
-                      if (grids[index][0] == "ViVA" &&
-                          grids[index][1] == "Person") {
+                      if (gridsiOS[index][0] == "ViVA" ||
+                          gridsAndroid[index][0] == "SIS" &&
+                              gridsiOS[index][1] == "Person" ||
+                          gridsAndroid[index][1] == "Person") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => VivaPerson()),
@@ -154,7 +179,9 @@ class StartScreen extends StatelessWidget {
                           children: [
                             Center(
                               child: Icon(
-                                grids[index][2],
+                                Platform.isIOS
+                                    ? gridsiOS[index][2]
+                                    : gridsAndroid[index][2],
                                 size: 100,
                                 color: Colors.amber,
                               ),
@@ -164,7 +191,9 @@ class StartScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 AutoSizeText(
-                                  grids[index][0],
+                                  Platform.isIOS
+                                      ? gridsiOS[index][0]
+                                      : gridsAndroid[index][0],
                                   maxLines: 1,
                                   style: TextStyle(
                                       fontSize: 20,
@@ -172,7 +201,9 @@ class StartScreen extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                 ),
                                 AutoSizeText(
-                                  grids[index][1],
+                                  Platform.isIOS
+                                      ? gridsiOS[index][1]
+                                      : gridsAndroid[index][1],
                                   maxLines: 1,
                                   style: TextStyle(
                                       fontSize: 20,
