@@ -25,7 +25,18 @@ class _ResultScreenState extends State<ResultScreen> {
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
-          title: Text("ViVA Person"),
+          automaticallyImplyLeading: Platform.isIOS ? true : false,
+          title: Platform.isIOS
+              ? Text(
+                  "ViVA Person",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                )
+              : Text(
+                  "SIS Person",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white),
+                ),
         ),
         backgroundColor:
             hitsProvider.hits.length > 0 ? Colors.white : Colors.grey[300],

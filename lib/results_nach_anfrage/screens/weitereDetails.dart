@@ -52,12 +52,29 @@ class _WeitereDetailsState extends State<WeitereDetails> {
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
-          title: Text("ViVA Person"),
+          automaticallyImplyLeading: Platform.isIOS ? true : false,
+          title: Platform.isIOS
+              ? Text(
+                  "ViVA Person",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                )
+              : Text(
+                  "SIS Person",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white),
+                ),
           actions: [
             Platform.isIOS
                 ? Icon(IOScons.IOSIcons.square_and_arrow_up)
-                : Icon(IOScons.IOSIcons.square_and_arrow_up),
-            Icon(AndroidIcons.account_box_outline)
+                : IconButton(
+                    icon: Icon(IOScons.IOSIcons.square_and_arrow_up),
+                    onPressed: () {},
+                  ),
+            IconButton(
+              icon: Icon(AndroidIcons.account_box_outline),
+              onPressed: () {},
+            )
           ],
         ),
         body: Padding(

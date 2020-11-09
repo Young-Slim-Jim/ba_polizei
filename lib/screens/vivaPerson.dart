@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ba_polizei/results_nach_anfrage/widgets/VivaAppbar.dart';
 import 'package:ba_polizei/widgets/androidLoadingSheet.dart';
 import 'package:ba_polizei/widgets/cupertinoLoadingSheet.dart';
@@ -35,6 +36,9 @@ class _VivaPersonState extends State<VivaPerson> {
   final nameFocus = FocusNode();
   final vornameFocus = FocusNode();
   final bdayFocus = FocusNode();
+  final geburtsortFocus = FocusNode();
+  final geburtsnameFocus = FocusNode();
+  final spitznameFocus = FocusNode();
 
   TextEditingController abfragegrundController = TextEditingController(
     text: 'Bitte auswählen',
@@ -77,6 +81,18 @@ class _VivaPersonState extends State<VivaPerson> {
     vornameFocus.addListener(() {
       setState(() {});
     });
+
+    geburtsnameFocus.addListener(() {
+      setState(() {});
+    });
+
+    geburtsortFocus.addListener(() {
+      setState(() {});
+    });
+
+    spitznameFocus.addListener(() {
+      setState(() {});
+    });
   }
 
   Future<void> login() async {
@@ -94,50 +110,46 @@ class _VivaPersonState extends State<VivaPerson> {
             : Size.fromHeight(height * 0.14),
         child: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
-          leading: IconButton(
-            icon: Icon(Icons.chevron_left, size: 30),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          leading: Platform.isIOS
+              ? IconButton(
+                  icon: Icon(Icons.chevron_left, size: 30),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              : Container(),
           elevation: 0.0,
-          title: Row(
-            children: [
-              Expanded(
-                flex: 45,
-                child: Text(
-                  Platform.isIOS ? "ViVA Person" : "SIS Person",
+          automaticallyImplyLeading: Platform.isIOS ? true : false,
+          title: Platform.isIOS
+              ? Text(
+                  "ViVA Person",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white),
+                )
+              : Text(
+                  "SIS Person",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white),
                 ),
-              ),
-              Expanded(
-                  flex: 13,
-                  child: IconButton(
-                      icon: Platform.isIOS
-                          ? Icon(IOScons.IOSIcons.xmark_square)
-                          : Icon(AndroidIcons.AndroidIcons.eraser),
-                      onPressed: () {})),
-              Expanded(
-                  flex: 13,
-                  child: IconButton(
-                      icon: Platform.isIOS
-                          ? Icon(IOScons.IOSIcons.doc_text_viewfinder)
-                          : Icon(AndroidIcons
-                              .AndroidIcons.credit_card_scan_outline),
-                      onPressed: () => {})),
-              Expanded(
-                flex: 13,
-                child: IconButton(
-                  icon: Icon(CupertinoIcons.search),
-                  onPressed: () {
-                    searchForPerson();
-                  },
-                ),
-              ),
-            ],
-          ),
-          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(CupertinoIcons.search),
+              onPressed: () {
+                searchForPerson();
+              },
+            ),
+            IconButton(
+                icon: Platform.isIOS
+                    ? Icon(IOScons.IOSIcons.doc_text_viewfinder)
+                    : Icon(AndroidIcons.AndroidIcons.credit_card_scan_outline),
+                onPressed: () => {}),
+            IconButton(
+                icon: Platform.isIOS
+                    ? Icon(IOScons.IOSIcons.xmark_square)
+                    : Icon(AndroidIcons.AndroidIcons.eraser),
+                onPressed: () {})
+          ],
+          centerTitle: Platform.isIOS ? true : false,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(height * 0.05),
             child: Container(
@@ -229,22 +241,12 @@ class _VivaPersonState extends State<VivaPerson> {
         _formKeyName.currentState.validate() &&
         _formKeyBday.currentState.validate() &&
         _formKeyVorname.currentState.validate()) {
-      if (erweitert) {
-        if (_formkeyGeburtsland.currentState.validate() &&
-            _formkeyGeburtsname.currentState.validate() &&
-            _formkeyGeburtsort.currentState.validate() &&
-            _formkeyGeschlecht.currentState.validate() &&
-            _formkeyRolle.currentState.validate() &&
-            _formkeySpitzname.currentState.validate() &&
-            _formkeyStaatsangehoerigkeit.currentState.validate()) {
-          await selectHits();
+      await selectHits();
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ResultScreen()),
-          );
-        }
-      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultScreen()),
+      );
 
       Platform.isIOS
           ? showCupertinoDialog(
@@ -361,11 +363,20 @@ class _VivaPersonState extends State<VivaPerson> {
     return Column(
       children: [
         floatingLabelTextfield(
-            "Geburtsort", bdayOrtController, _formkeyGeburtsort),
+            title: "Geburtsort",
+            controller: bdayOrtController,
+            key: _formkeyGeburtsort,
+            node: geburtsortFocus),
         floatingLabelTextfield(
-            "Geburtsname", bdaynameController, _formkeyGeburtsname),
+            title: "Geburtsname",
+            controller: bdaynameController,
+            key: _formkeyGeburtsname,
+            node: geburtsnameFocus),
         floatingLabelTextfield(
-            "Spitzname", nicknameController, _formkeySpitzname),
+            title: "Spitzname",
+            controller: nicknameController,
+            key: _formkeySpitzname,
+            node: spitznameFocus),
         searchSheettextfield("Geburtsland", Listsammlung().getlaenderNamen(),
             bdaylandController, _formkeyGeburtsland),
         searchSheettextfield(
@@ -381,38 +392,47 @@ class _VivaPersonState extends State<VivaPerson> {
     );
   }
 
-  Widget floatingLabelTextfield(
+  Widget floatingLabelTextfield({
     String title,
     TextEditingController controller,
     GlobalKey<FormState> key,
-  ) {
+    FocusNode node,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: Form(
-        key: key,
-        child: TextFormField(
-          autocorrect: false,
-          validator: (value) {
-            if (checkForDigits(value)) {
-              return "keine Zahlen eingeben";
-            }
-            return null;
-          },
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: title,
-            filled: Platform.isIOS ? false : true,
-            fillColor: Platform.isIOS
-                ? Colors.transparent
-                : Theme.of(context).secondaryHeaderColor,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 5,
+      child: Stack(alignment: Alignment.centerRight, children: [
+        Form(
+          key: key,
+          child: TextFormField(
+            focusNode: node,
+            autocorrect: false,
+            controller: controller,
+            validator: (value) {
+              if (checkForDigits(value)) {
+                return "keine Zahlen eingeben";
+              }
+              return "";
+            },
+            decoration: InputDecoration(
+              labelText: title,
+              filled: Platform.isIOS ? false : true,
+              fillColor: Platform.isIOS
+                  ? Colors.transparent
+                  : Theme.of(context).secondaryHeaderColor,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 5,
+              ),
             ),
           ),
         ),
-      ),
+        node.hasFocus
+            ? IconButton(
+                icon: Icon(Icons.close, color: Theme.of(context).hoverColor),
+                onPressed: () => controller.clear())
+            : Container(),
+      ]),
     );
   }
 
@@ -673,18 +693,22 @@ class _VivaPersonState extends State<VivaPerson> {
               ),
             ),
           ),
-          IconButton(
-            icon: Platform.isIOS
-                ? Icon(IOScons.IOSIcons.calendar,
-                    color: Theme.of(context).hoverColor)
-                : Icon(AndroidIcons.AndroidIcons.calendar,
-                    color: Theme.of(context).hoverColor),
-            onPressed: () async {
-              Platform.isAndroid
-                  ? showAndroidDatePicker()
-                  : showIOSDatePicker();
-            },
-          ),
+          bdayFocus.hasFocus
+              ? IconButton(
+                  icon: Icon(Icons.close, color: Theme.of(context).hoverColor),
+                  onPressed: () => bdayController.clear())
+              : IconButton(
+                  icon: Platform.isIOS
+                      ? Icon(IOScons.IOSIcons.calendar,
+                          color: Theme.of(context).hoverColor)
+                      : Icon(AndroidIcons.AndroidIcons.calendar,
+                          color: Theme.of(context).hoverColor),
+                  onPressed: () async {
+                    Platform.isAndroid
+                        ? showAndroidDatePicker()
+                        : showIOSDatePicker();
+                  },
+                ),
         ],
       ),
     );
@@ -773,21 +797,19 @@ class _VivaPersonState extends State<VivaPerson> {
                     icon:
                         Icon(Icons.close, color: Theme.of(context).hoverColor),
                     onPressed: () => nameController.clear())
-                : Platform.isIOS
-                    ? IconButton(
-                        icon: Icon(
-                          IOScons.IOSIcons.arrow_up_arrow_down,
-                          color: Theme.of(context).hoverColor,
-                        ),
-                        onPressed: () {
-                          String savetext;
-                          savetext = nameController.text;
-                          nameController.text = vornameController.text;
-                          vornameController.text = savetext;
-                          nameController.selection = TextSelection.fromPosition(
-                              TextPosition(offset: nameController.text.length));
-                        })
-                    : Container()
+                : IconButton(
+                    icon: Icon(
+                      IOScons.IOSIcons.arrow_up_arrow_down,
+                      color: Theme.of(context).hoverColor,
+                    ),
+                    onPressed: () {
+                      String savetext;
+                      savetext = nameController.text;
+                      nameController.text = vornameController.text;
+                      vornameController.text = savetext;
+                      nameController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: nameController.text.length));
+                    })
           ],
         ),
       ),
@@ -838,22 +860,20 @@ class _VivaPersonState extends State<VivaPerson> {
                       icon: Icon(Icons.close,
                           color: Theme.of(context).hoverColor),
                       onPressed: () => vornameController.clear())
-                  : Platform.isIOS
-                      ? IconButton(
-                          icon: Icon(IOScons.IOSIcons.arrow_up_arrow_down,
-                              color: Theme.of(context).hoverColor),
-                          onPressed: () {
-                            // nameFocus.unfocus();
-                            // vornameFocus.unfocus();
-                            String savetext;
-                            savetext = nameController.text;
-                            nameController.text = vornameController.text;
-                            vornameController.text = savetext;
-                            vornameController.selection =
-                                TextSelection.fromPosition(TextPosition(
-                                    offset: vornameController.text.length));
-                          })
-                      : Container()
+                  : IconButton(
+                      icon: Icon(IOScons.IOSIcons.arrow_up_arrow_down,
+                          color: Theme.of(context).hoverColor),
+                      onPressed: () {
+                        // nameFocus.unfocus();
+                        // vornameFocus.unfocus();
+                        String savetext;
+                        savetext = nameController.text;
+                        nameController.text = vornameController.text;
+                        vornameController.text = savetext;
+                        vornameController.selection =
+                            TextSelection.fromPosition(TextPosition(
+                                offset: vornameController.text.length));
+                      })
             ],
           ),
         ),

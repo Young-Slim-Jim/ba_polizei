@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Platform.isIOS ? Color(0xff00416d) : Color(0xff1d2d50),
         accentColor: Platform.isIOS ? Colors.amber : Colors.white,
         secondaryHeaderColor:
-            Platform.isIOS ? Color(0xff43658b) : Color(0xffe8e8e8),
+            Platform.isIOS ? Color(0xff43658b) : Color(0xfff4f4f2),
         hoverColor: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         backgroundColor: Platform.isIOS ? Color(0xffe8e8e8) : Colors.white,

@@ -60,8 +60,10 @@ class _PersonAnimatedContainerState extends State<PersonAnimatedContainer> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: FaIcon(FontAwesomeIcons.exclamation,
-                          color: widget.selected ? Colors.red : Colors.white),
+                      child: Center(
+                        child: FaIcon(FontAwesomeIcons.exclamation,
+                            color: widget.selected ? Colors.white : Colors.red),
+                      ),
                     ),
                     Expanded(
                       flex: 11,

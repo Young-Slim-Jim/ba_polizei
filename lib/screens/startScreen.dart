@@ -133,9 +133,7 @@ class StartScreen extends StatelessWidget {
                               TextSpan(text: 'Angemeldet als'),
                               TextSpan(
                                   text: ' plxtu62',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textSelectionColor)),
+                                  style: TextStyle(color: Colors.amber)),
                             ],
                           ),
                         ),

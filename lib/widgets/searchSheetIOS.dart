@@ -80,6 +80,8 @@ class _SearchSheetIOSState extends State<SearchSheetIOS> {
                                   onTap: () {
                                     setState(() {
                                       searchController.clear();
+
+                                      print(widget.auswahl.length);
                                     });
                                   },
                                   child: Icon(Icons.cancel))
